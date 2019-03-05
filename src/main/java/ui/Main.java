@@ -1,5 +1,6 @@
 package ui;
 
+import database.PicDatabaseAccess;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        PicDatabaseAccess db = new PicDatabaseAccess();
+
+        if(db.open()){
+            System.out.println("connected to db");
+        }
+        else{
+            System.out.println("error");
+        }
 
         Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
         primaryStage.setTitle("SWEI");

@@ -1,6 +1,10 @@
 package database;
 
-public class PicDatabaseAccess implements ISQLiteDatabaseAccess, IDatabaseSync, IDatabaseSetup {
+public class PicDatabaseAccess extends SQLiteDatabaseAccess implements IDatabaseSync, IDatabaseSetup {
+
+    public PicDatabaseAccess() {
+        super("picdb");
+    }
 
     @Override
     public void setup() {
