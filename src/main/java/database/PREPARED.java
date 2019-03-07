@@ -17,12 +17,16 @@ interface PREPARED {
 
     String PHOTOGRAPHER_CREATE =
             "CREATE TABLE IF NOT EXISTS photographer (" +
-            "id INT ASC PRIMARY KEY NOT NULL," +
+            "id INTEGER PRIMARY KEY," +
             "firstname VARCHAR(255) NOT NULL," +
             "surname VARCHAR(255) NOT NULL," +
             "dateofbirth DATE NOT NULL," +
             "address VARCHAR(255)" +
             ");";
+
+    String PHOTOGRAPHER_INSERT =
+            "INSERT INTO photographer " +
+                    "VALUES (NULL, ?, ?, ?, ?);";
 
     String IMAGES_CREATE =
             "CREATE TABLE IF NOT EXISTS images (" +

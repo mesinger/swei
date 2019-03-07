@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.sql.Date;
+
 public class Main extends Application {
 
     @Override
@@ -18,6 +20,7 @@ public class Main extends Application {
             System.out.println("connected to db");
 
             db.setup();
+            db.addPhotographer("tom", "turbos", new Date(System.currentTimeMillis()), "Schoenbrunn");
         }
         else{
             System.out.println("error");
