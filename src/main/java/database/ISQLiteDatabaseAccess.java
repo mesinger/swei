@@ -7,7 +7,7 @@ import java.sql.SQLException;
 /**
  * base class for connections to sqlite databases
  */
-abstract class SQLiteDatabaseAccess implements IDatabaseConnection {
+abstract class ISQLiteDatabaseAccess implements IDatabaseConnection {
 
     //class name for jdbc connector
     private final static String JDBC_CLASSNAME = "org.sqlite.JDBC";
@@ -20,7 +20,7 @@ abstract class SQLiteDatabaseAccess implements IDatabaseConnection {
     //connection url for DriverManager
     private final String connectionUrl;
 
-    SQLiteDatabaseAccess(String databaseName){
+    ISQLiteDatabaseAccess(String databaseName){
 
         this.databaseName = databaseName;
         connectionUrl = "jdbc:sqlite:" + databaseName + ".db";

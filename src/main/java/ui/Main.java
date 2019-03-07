@@ -16,6 +16,8 @@ public class Main extends Application {
 
         if(db.open()){
             System.out.println("connected to db");
+
+            db.setup();
         }
         else{
             System.out.println("error");
