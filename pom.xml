@@ -102,6 +102,13 @@
             <version>6.2</version> <!-- Use newer version of ASM -->
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.0.0-RC1</version>
+        </dependency>
+
     </dependencies>
     
 </project>
