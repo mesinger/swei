@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.control.ScrollPane" xmlns:fx="http://javafx.com/fxml">
+    <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="2000.0"/>
+    </content>
+</fx:root>
