@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -13,9 +14,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <StackPane>
                     <children>
@@ -23,65 +26,71 @@
                             <menus>
                                 <Menu mnemonicParsing="false" text="File">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Close" />
+                                        <MenuItem mnemonicParsing="false" text="Close"/>
                                     </items>
                                 </Menu>
                                 <Menu mnemonicParsing="false" text="Edit">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Delete" />
+                                        <MenuItem mnemonicParsing="false" text="Delete"/>
                                     </items>
                                 </Menu>
                                 <Menu mnemonicParsing="false" text="Help">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="About" />
+                                        <MenuItem mnemonicParsing="false" text="About"/>
                                     </items>
                                 </Menu>
                             </menus>
                         </MenuBar>
                         <Label fx:id="lblUsername" text="Label" StackPane.alignment="CENTER_RIGHT">
                             <StackPane.margin>
-                                <Insets right="10.0" />
+                                <Insets right="10.0"/>
                             </StackPane.margin>
                         </Label>
                     </children>
                 </StackPane>
-                <TextField focusTraversable="false" promptText="Search" />
-                <SplitPane dividerPositions="0.5" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                <TextField focusTraversable="false" promptText="Search"/>
+                <SplitPane dividerPositions="0.7" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                           VBox.vgrow="ALWAYS">
                     <items>
                         <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0">
                             <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                     <children>
-                                        <Label text="Image preview" />
+                                        <Label text="Image preview"/>
                                     </children>
                                 </AnchorPane>
                                 <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                                     <tabs>
                                         <Tab text="IPTC">
                                             <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <Label text="IPTC Information" />
-                                       </children></AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+                                                            prefWidth="200.0">
+                                                    <children>
+                                                        <Label text="IPTC Information"/>
+                                                    </children>
+                                                </AnchorPane>
                                             </content>
                                         </Tab>
                                         <Tab text="EXIF">
                                             <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <Label text="EXIF Information" />
-                                       </children></AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+                                                            prefWidth="200.0">
+                                                    <children>
+                                                        <Label text="EXIF Information"/>
+                                                    </children>
+                                                </AnchorPane>
                                             </content>
                                         </Tab>
                                     </tabs>
                                 </TabPane>
                             </items>
                         </SplitPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                            <children>
-                                <Label text="Image scroller" />
-                            </children>
-                        </AnchorPane>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="2000.0"/>
+                            </content>
+                        </ScrollPane>
                     </items>
                 </SplitPane>
             </children>
