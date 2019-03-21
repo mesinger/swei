@@ -30,10 +30,12 @@ interface PREPARED {
 
     String IMAGES_CREATE =
             "CREATE TABLE IF NOT EXISTS images (" +
-                    "id INT ASC PRIMARY KEY NOT NULL," +
+                    "id INTEGER PRIMARY KEY," +
                     "filename VARCHAR(255) NOT NULL," +
-                    "surname VARCHAR(255) NOT NULL," +
-                    "dateofbirth DATE NOT NULL," +
-                    "address VARCHAR(255)" +
+                    "exif_time DATETIME NULL," +
+                    "exif_iso VARCHAR(255) NULL," +
+                    "exif_res VARCHAR(255) NULL," +
+                    "exif_aspect_ratio VARCHAR(255) NULL," +
+                    "keywords VARCHAR(255) NULL" +
                     ");";
 }

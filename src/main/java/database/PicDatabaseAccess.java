@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSync, IDatabaseSetup {
 
@@ -76,6 +78,7 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
     public void setup() {
 
         PreparedStatement createPhotographer = null;
+        PreparedStatement createImages = null;
 
         try {
 
@@ -84,8 +87,13 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
             int resultUpdate;
 
+            //create photographer table
             createPhotographer = conn.prepareStatement(PREPARED.PHOTOGRAPHER_CREATE);
             resultUpdate = createPhotographer.executeUpdate();
+
+            //create images table
+            createImages = conn.prepareStatement(PREPARED.IMAGES_CREATE);
+            resultUpdate = createImages.executeUpdate();
 
             conn.commit();
 
@@ -105,6 +113,9 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
                 if(createPhotographer != null)
                     createPhotographer.close();
+
+                if(createImages != null)
+                    createImages.close();
 
                 conn.setAutoCommit(true);
 
