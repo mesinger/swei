@@ -102,6 +102,14 @@
             <version>6.2</version> <!-- Use newer version of ASM -->
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
+        <dependency>
+            <groupId>com.drewnoakes</groupId>
+            <artifactId>metadata-extractor</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+
     </dependencies>
     
 </project>
