@@ -1,20 +1,30 @@
 package ui;
 
-import image.JPEGImageData;
-import image.JPEGImageDataExtractor;
+import database.PicDatabaseAccess;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.sql.Date;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        JPEGImageDataExtractor reader = new JPEGImageDataExtractor();
-        JPEGImageData img = reader.extractExifAndIPTC("img/IMG_0914.jpg");
+        PicDatabaseAccess db = new PicDatabaseAccess();
+
+        if(db.open()){
+            System.out.println("connected to db");
+
+            db.setup();
+            db.addPhotographer("tom", "turbos", new Date(System.currentTimeMillis()), "Schoenbrunn");
+        }
+        else{
+            System.out.println("error");
+        }
 
         Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
         primaryStage.setTitle("SWEI");
