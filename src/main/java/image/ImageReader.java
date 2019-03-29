@@ -4,6 +4,7 @@ import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
+import com.drew.metadata.Tag;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.iptc.IptcDirectory;
@@ -48,6 +49,7 @@ public class ImageReader {
             int orientation = -1;
             Date modifydate = null;
             int iso = 0;
+            String keywords = null;
 
             if(exifIFD0Directory.containsTag(EXIFID.ImageWidth))
                 width = exifIFD0Directory.getInt(EXIFID.ImageWidth);
@@ -64,7 +66,10 @@ public class ImageReader {
             if(exifSubIFDDirectory.containsTag(EXIFID.ISO))
                 iso = exifSubIFDDirectory.getInt(EXIFID.ISO);
 
-            res = new Image(path, width, height, orientation, iso, modifydate);
+            if(iptcDirectory.containsTag(IPTCID.Keywords))
+                keywords = iptcDirectory.getString(IPTCID.Keywords);
+
+            res = new Image(path, width, height, orientation, iso, modifydate, keywords);
 
         } catch (ImageProcessingException e) {
             e.printStackTrace();
