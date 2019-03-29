@@ -31,11 +31,16 @@ interface PREPARED {
     String IMAGES_CREATE =
             "CREATE TABLE IF NOT EXISTS images (" +
                     "id INTEGER PRIMARY KEY," +
-                    "filename VARCHAR(255) NOT NULL," +
-                    "exif_time DATETIME NULL," +
-                    "exif_iso VARCHAR(255) NULL," +
-                    "exif_res VARCHAR(255) NULL," +
-                    "exif_aspect_ratio VARCHAR(255) NULL," +
+                    "filepath VARCHAR(255) NOT NULL," +
+                    "width INTEGER NULL," +
+                    "height INTEGER NULL," +
+                    "orientation INTEGER NULL," +
+                    "iso INTEGER NULL," +
+                    "modifyDate DATETIME NULL," +
                     "keywords VARCHAR(255) NULL" +
                     ");";
+
+    String IMAGES_INSERT =
+            "INSERT INTO images " +
+                    "VALUES (NULL, ?, ?, ?. ?, ?, ?, ?);";
 }

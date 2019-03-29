@@ -9,6 +9,9 @@ import java.util.List;
 
 public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSync, IDatabaseSetup {
 
+    /*
+    calls constructor of ISQLiteDatabaseAccess
+     */
     public PicDatabaseAccess() {
         super("picdb");
     }
@@ -68,6 +71,13 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
             return false;
         }
+    }
+
+    public boolean addImage(){
+
+
+
+        return false;
     }
 
     /**
