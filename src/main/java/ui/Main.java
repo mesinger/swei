@@ -1,7 +1,7 @@
 package ui;
 
-import image.Image;
-import image.ImageReader;
+import image.JPEGImageData;
+import image.JPEGImageDataExtractor;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,8 +13,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        ImageReader reader = new ImageReader();
-        Image img = reader.extractExifAndIPTC("img/IMG_0914.jpg");
+        JPEGImageDataExtractor reader = new JPEGImageDataExtractor();
+        JPEGImageData img = reader.extractExifAndIPTC("img/IMG_0914.jpg");
 
         Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
         primaryStage.setTitle("SWEI");
