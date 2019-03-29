@@ -2,18 +2,17 @@ package image;
 
 import java.util.Date;
 
-public class Image {
+public abstract class IImageData {
 
-    private String path;
-    private int width;
-    private int height;
-    private Orientation orientation;
-    private ISO iso;
-    //private AspectRatio aspectRatio;
-    private Date modifyDate;
-    private String keywords;
+    protected String path;
+    protected int width;
+    protected int height;
+    protected Orientation orientation;
+    protected ISO iso;
+    protected Date modifyDate;
+    protected String keywords;
 
-    public Image(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords){
+    public IImageData(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords) {
 
         this.path = path;
         this.width = width;
@@ -24,7 +23,7 @@ public class Image {
         this.keywords = keywords;
     }
 
-    public class Orientation{
+    public final class Orientation{
 
         private int type;
 
@@ -57,7 +56,7 @@ public class Image {
         }
     }
 
-    public class ISO {
+    public final class ISO {
 
         private int iso;
 
@@ -75,7 +74,7 @@ public class Image {
         }
     }
 
-    public class AspectRatio{
+    public final class AspectRatio{
 
         private int x, y;
 
