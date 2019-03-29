@@ -11,8 +11,9 @@ public class Image {
     private ISO iso;
     //private AspectRatio aspectRatio;
     private Date modifyDate;
+    private String keywords;
 
-    public Image(String path, int width, int height, int orientation, int iso, Date modifyDate){
+    public Image(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords){
 
         this.path = path;
         this.width = width;
@@ -20,6 +21,7 @@ public class Image {
         this.orientation = new Orientation(orientation);
         this.iso = new ISO(iso);
         this.modifyDate = modifyDate;
+        this.keywords = keywords;
     }
 
     public class Orientation{

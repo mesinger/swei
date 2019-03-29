@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         ImageReader reader = new ImageReader();
-        Image img = reader.extractExifAndIPTC("img/IMG_0914.JPG");
+        Image img = reader.extractExifAndIPTC("img/IMG_0914.jpg");
 
         Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
         primaryStage.setTitle("SWEI");
