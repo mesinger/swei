@@ -1,6 +1,9 @@
 package ui;
 
 import database.PicDatabaseAccess;
+import image.IImageData;
+import image.JPEGImageData;
+import image.JPEGImageDataExtractor;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +23,11 @@ public class Main extends Application {
             System.out.println("connected to db");
 
             db.setup();
-            db.addPhotographer("tom", "turbos", new Date(System.currentTimeMillis()), "Schoenbrunn");
+
+            JPEGImageDataExtractor dataExtractor = new JPEGImageDataExtractor();
+            IImageData data = dataExtractor.extractExifAndIPTC("img/IMG_0914.JPG");
+
+            db.addImage(data);
         }
         else{
             System.out.println("error");

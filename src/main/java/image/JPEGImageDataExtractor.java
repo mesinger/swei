@@ -11,7 +11,7 @@ import com.drew.metadata.jpeg.JpegDirectory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Date;
 
 /*
 abstract class for extracting
@@ -25,7 +25,7 @@ public class JPEGImageDataExtractor implements IImageDataExtractor{
      */
     public JPEGImageData extractExifAndIPTC(String path){
 
-        if(!path.endsWith(".jpg") && !path.endsWith(".jpeg"))
+        if(!path.toLowerCase().endsWith(".jpg") && !path.toLowerCase().endsWith(".jpeg"))
             return null;
 
         JPEGImageData res = null;
@@ -60,7 +60,7 @@ public class JPEGImageDataExtractor implements IImageDataExtractor{
                     orientation = exifIFD0Directory.getInt(EXIFID.Orientation);
 
                 if(exifIFD0Directory.containsTag(EXIFID.ModifyDate))
-                    modifydate = exifIFD0Directory.getDate(EXIFID.ModifyDate);
+                    modifydate = new Date(exifIFD0Directory.getDate(EXIFID.ModifyDate).getTime());
             }
 
             if(exifSubIFDDirectory != null){

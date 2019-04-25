@@ -1,6 +1,6 @@
 package image;
 
-import java.util.Date;
+import java.sql.Date;
 
 public abstract class IImageData {
 
@@ -8,17 +8,18 @@ public abstract class IImageData {
     protected int width;
     protected int height;
     protected Orientation orientation;
-    protected ISO iso;
+    protected int iso;
     protected Date modifyDate;
     protected String keywords;
 
     public IImageData(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords) {
 
         this.path = path;
-        this.width = width;
-        this.height = height;
+        this.width = (width < 0) ? -1 : width;
+        this.height = (height < 0) ? -1 : height;
+
         this.orientation = new Orientation(orientation);
-        this.iso = new ISO(iso);
+        this.iso = iso;
         this.modifyDate = modifyDate;
         this.keywords = keywords;
     }
@@ -54,23 +55,9 @@ public abstract class IImageData {
                     return "invalid orientation";
             }
         }
-    }
 
-    public final class ISO {
-
-        private int iso;
-
-        public ISO(int iso) {
-            this.iso = iso;
-        }
-
-        public int getIso() {
-            return iso;
-        }
-
-        @Override
-        public String toString() {
-            return Integer.toString(iso);
+        public int getType() {
+            return type;
         }
     }
 
@@ -95,5 +82,33 @@ public abstract class IImageData {
         public String toString() {
             return Integer.toString(x) + ":" + Integer.toString(y);
         }
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public int getIso() {
+        return iso;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public String getKeywords() {
+        return keywords;
     }
 }

@@ -1,5 +1,7 @@
 package database;
 
+import image.IImageData;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -59,25 +61,55 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
         }
         finally {
 
-            try{
-
-                conn.setAutoCommit(true);
-
-                if(stmt != null)
-                    stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeStatement(stmt);
 
             return false;
         }
     }
 
-    public boolean addImage(){
+    public boolean addImage(IImageData data){
 
+        PreparedStatement stmt = null;
 
+        try {
 
-        return false;
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+
+            stmt = conn.prepareStatement(PREPARED.IMAGES_INSERT);
+            stmt.setString(1, data.getPath());
+            stmt.setInt(2, data.getWidth());
+            stmt.setInt(3, data.getHeight());
+            stmt.setInt(4, data.getOrientation().getType());
+            stmt.setInt(5, data.getIso());
+            stmt.setDate(6, data.getModifyDate());
+            stmt.setString(7, data.getKeywords());
+
+            int result = stmt.executeUpdate();
+
+            conn.commit();
+
+            conn.setAutoCommit(true);
+
+            return result == 1;
+
+        } catch (SQLException e) {
+
+            System.err.println("SQL: Error while inserting row");
+            e.printStackTrace();
+
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        finally {
+
+            closeStatement(stmt);
+
+            return false;
+        }
     }
 
     /**
@@ -138,5 +170,17 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
     @Override
     public boolean sync() {
         return false;
+    }
+
+    private void closeStatement(PreparedStatement stmt) {
+        try{
+
+            conn.setAutoCommit(true);
+
+            if(stmt != null)
+                stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
