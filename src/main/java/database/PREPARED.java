@@ -42,5 +42,5 @@ interface PREPARED {
 
     String IMAGES_INSERT =
             "INSERT INTO images " +
-                    "VALUES (NULL, ?, ?, ?. ?, ?, ?, ?);";
+                    "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
 }
