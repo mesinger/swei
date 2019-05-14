@@ -1,8 +1,12 @@
 package ui;
 
+import image.IImageData;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -11,10 +15,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+import javax.imageio.metadata.IIOMetadata;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,15 +59,19 @@ public class Imagescroll extends ScrollPane {
                 }
 
             }
-
         });
     }
 
-    public void addPlaceholderBox(String imagepath) {
-        AnchorPane anchorPane = new ProxyAnchorPane(imagepath);
+    public void addPlaceholderBox(IImageData image) {
+        AnchorPane anchorPane = new ProxyAnchorPane(image);
 
         // Bind the width to the height of the Imagescroll to simulate images with 1:1 aspect ratio
         anchorPane.prefWidthProperty().bind(heightProperty());
+        anchorPane.setFocusTraversable(true);
+
+        anchorPane.setOnMouseClicked((EventHandler) -> {
+            fireEvent(new ImageClickedEvent(image));
+        });
 
         imageBox.getChildren().add(anchorPane);
     }
@@ -98,3 +108,29 @@ public class Imagescroll extends ScrollPane {
     }
 }
 
+class ImageClickedEvent extends Event {
+
+    private IImageData image;
+
+    public static final EventType<ImageClickedEvent> IMAGE_CLICKED_EVENT_TYPE = new EventType(ANY);
+
+    public ImageClickedEvent(IImageData image) {
+        super(IMAGE_CLICKED_EVENT_TYPE);
+        this.image = image;
+    }
+
+    public void invokeHandler(ImageClickedEventHandler handler) {
+        handler.onClicked(image);
+    }
+
+}
+
+abstract class ImageClickedEventHandler implements EventHandler<ImageClickedEvent> {
+
+    public abstract void onClicked(IImageData image);
+
+    @Override
+    public void handle(ImageClickedEvent event) {
+        event.invokeHandler(this);
+    }
+}

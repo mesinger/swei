@@ -69,7 +69,7 @@
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
                                                             prefWidth="200.0">
                                                     <children>
-                                                        <Label text="IPTC Information"/>
+                                                        <Label fx:id="iptclabel" text="IPTC Information"/>
                                                     </children>
                                                 </AnchorPane>
                                             </content>
@@ -79,7 +79,7 @@
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
                                                             prefWidth="200.0">
                                                     <children>
-                                                        <Label text="EXIF Information"/>
+                                                        <Label fx:id="exiflabel" text="EXIF Information"/>
                                                     </children>
                                                 </AnchorPane>
                                             </content>
