@@ -40,8 +40,7 @@ public class Imagescroll extends ScrollPane {
 
         // TODO: Remove after testing
         for (int i = 0; i < 1000; i++) {
-            //addImage(new Image("file:///home/karl/Data/Technikum/SEM4/SWEI/swei/procedurally.png"));
-            addPlaceholderBox();
+            addPlaceholderBox("file:///home/karl/Data/Technikum/SEM4/SWEI/swei/procedurally.png");
         }
 
         vvalueProperty().addListener((obs) -> checkVisible());
@@ -54,7 +53,8 @@ public class Imagescroll extends ScrollPane {
                 Pane pane = (Pane)node;
 
                 if ((pane).getChildren().size() == 0) {
-                    addImage(new Image("file:///home/karl/Data/Technikum/SEM4/SWEI/swei/procedurally.png"), pane);
+                    String path = ((ProxyAnchorPane)pane).getImagepath();
+                    addImage(new Image(path), pane);
                 }
 
             }
@@ -62,8 +62,8 @@ public class Imagescroll extends ScrollPane {
         });
     }
 
-    private void addPlaceholderBox() {
-        AnchorPane anchorPane = new ProxyAnchorPane();
+    private void addPlaceholderBox(String imagepath) {
+        AnchorPane anchorPane = new ProxyAnchorPane(imagepath);
 
         // Bind the width to the height of the Imagescroll to simulate images with 1:1 aspect ratio
         anchorPane.prefWidthProperty().bind(heightProperty());
