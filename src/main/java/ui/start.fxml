@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import ui.Imagescroll?>
 
+<?import javafx.scene.image.ImageView?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ui.StartPageController">
@@ -57,9 +58,13 @@
                     <items>
                         <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0">
                             <items>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                <AnchorPane fx:id="imageViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
+                                            prefWidth="100.0">
                                     <children>
                                         <Label text="Image preview"/>
+                                        <ImageView fx:id="imageView" preserveRatio="true"
+                                                   fitWidth="${imageViewContainer.width}"
+                                                   fitHeight="${imageViewContainer.height}"/>
                                     </children>
                                 </AnchorPane>
                                 <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
@@ -88,7 +93,7 @@
                                 </TabPane>
                             </items>
                         </SplitPane>
-                        <Imagescroll fx:id="imgscroll" />
+                        <Imagescroll fx:id="imgscroll"/>
                     </items>
                 </SplitPane>
             </children>

@@ -6,6 +6,8 @@ import image.JPEGImageDataExtractor;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.net.URL;
@@ -17,6 +19,7 @@ public class StartPageController implements Initializable {
 
     public Label iptclabel;
     public Label exiflabel;
+    public ImageView imageView;
     @FXML
     private Imagescroll imgscroll;
 
@@ -57,6 +60,7 @@ public class StartPageController implements Initializable {
                 @Override
                 public void onClicked(IImageData image) {
                     iptclabel.setText(image.getPath());
+                    imageView.setImage(new Image("file:///" + image.getPath())); // TODO: Move this 'file:///'
                 }
             });
         } else {
