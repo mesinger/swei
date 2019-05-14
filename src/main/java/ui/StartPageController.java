@@ -29,10 +29,9 @@ public class StartPageController implements Initializable {
 
             db.setup();
 
+            // TODO: This shouldn't be done on initialize, but only when the images need to be synced with the database
             // Get all images in folder
             List<String> imagePaths = new ArrayList<String>();
-
-
             File[] files = new File("img/").listFiles();
 
             for (File file : files) {
@@ -42,16 +41,18 @@ public class StartPageController implements Initializable {
                 }
             }
 
+            // Extract data from the found images
             JPEGImageDataExtractor dataExtractor = new JPEGImageDataExtractor();
 
             for (String image : imagePaths) {
                 IImageData data = dataExtractor.extractExifAndIPTC(image);
-
                 db.addImage(data);
 
+                // TODO: Don't use the data directly from the image file, get it from the database!
                 imgscroll.addPlaceholderBox(data);
             }
 
+            // Add event handler for when an image is clicked
             imgscroll.addEventHandler(ImageClickedEvent.IMAGE_CLICKED_EVENT_TYPE, new ImageClickedEventHandler() {
                 @Override
                 public void onClicked(IImageData image) {

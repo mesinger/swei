@@ -33,6 +33,7 @@ public class Imagescroll extends ScrollPane {
     private ObservableList<Node> visibleNodes = FXCollections.observableArrayList();
 
     public Imagescroll() {
+        // Setup custom FXML element
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
                 "imagescroll.fxml"));
         fxmlLoader.setRoot(this);
@@ -44,17 +45,17 @@ public class Imagescroll extends ScrollPane {
             throw new RuntimeException(exception);
         }
 
+        // When a ProxyAnchorPane becomes visible, the corresponding image is put into it
+        // TODO: It would be nice if we could do this in the ProxyAnchorPane, not here!
         vvalueProperty().addListener((obs) -> checkVisible());
         hvalueProperty().addListener((obs) -> checkVisible());
 
         visibleNodes.addListener((ListChangeListener<Node>) c -> {
-
             for (Node node : visibleNodes) {
-
-                Pane pane = (Pane)node;
+                Pane pane = (Pane) node;
 
                 if ((pane).getChildren().size() == 0) {
-                    String path = ((ProxyAnchorPane)pane).getImagepath();
+                    String path = ((ProxyAnchorPane) pane).getImagepath();
                     addImage(new Image(path), pane);
                 }
 
@@ -69,6 +70,7 @@ public class Imagescroll extends ScrollPane {
         anchorPane.prefWidthProperty().bind(heightProperty());
         anchorPane.setFocusTraversable(true);
 
+        // When an image is clicked, fire the custom ImageClickedEvent with the IImageData
         anchorPane.setOnMouseClicked((EventHandler) -> {
             fireEvent(new ImageClickedEvent(image));
         });
@@ -112,7 +114,7 @@ class ImageClickedEvent extends Event {
 
     private IImageData image;
 
-    public static final EventType<ImageClickedEvent> IMAGE_CLICKED_EVENT_TYPE = new EventType(ANY);
+    public static final EventType<ImageClickedEvent> IMAGE_CLICKED_EVENT_TYPE = new EventType<>(ANY);
 
     public ImageClickedEvent(IImageData image) {
         super(IMAGE_CLICKED_EVENT_TYPE);
