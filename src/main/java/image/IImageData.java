@@ -11,8 +11,29 @@ public abstract class IImageData {
     protected int iso;
     protected Date modifyDate;
     protected String keywords;
+    protected String aperture;
+    protected String model;
+    protected String focal_length;
+    protected String exposure;
 
-    public IImageData(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords) {
+    public String getAperture() {
+        return aperture;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getFocal_length() {
+        return focal_length;
+    }
+
+    public String getExposure() {
+        return exposure;
+    }
+
+    public IImageData(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords,
+                      String aperture, String model, String focal_length, String exposure) {
 
         this.path = path;
         this.width = (width < 0) ? -1 : width;
@@ -22,6 +43,11 @@ public abstract class IImageData {
         this.iso = iso;
         this.modifyDate = modifyDate;
         this.keywords = keywords;
+
+        this.aperture = aperture;
+        this.model = model;
+        this.focal_length = focal_length;
+        this.exposure = exposure;
     }
 
     public final class Orientation{

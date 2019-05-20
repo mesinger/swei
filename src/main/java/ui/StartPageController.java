@@ -16,10 +16,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class StartPageController implements Initializable {
-
-    public Label iptclabel;
-    public Label exiflabel;
     public ImageView imageView;
+    public Label iso;
+    public Label camname;
+    public Label exposure_time;
+    public Label aperture;
+    public Label focal_length;
+    public Label exposure_program;
     @FXML
     private Imagescroll imgscroll;
 
@@ -59,12 +62,16 @@ public class StartPageController implements Initializable {
             imgscroll.addEventHandler(ImageClickedEvent.IMAGE_CLICKED_EVENT_TYPE, new ImageClickedEventHandler() {
                 @Override
                 public void onClicked(IImageData image) {
-                    iptclabel.setText(image.getPath());
                     imageView.setImage(new Image("file:///" + image.getPath())); // TODO: Move this 'file:///'
+                    camname.setText("Camera model: " + image.getModel());
+                    iso.setText("ISO: " + image.getIso());
+                    exposure_time.setText("Exposure time: " + image.getExposure());
+                    focal_length.setText("Focal length: " + image.getFocal_length());
+                    aperture.setText("Aperture: " + image.getAperture());
                 }
             });
         } else {
-            System.out.println("error");
+            System.out.println("error connecting to db");
         }
     }
 }

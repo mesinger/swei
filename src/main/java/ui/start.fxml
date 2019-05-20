@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -16,6 +15,7 @@
 <?import ui.Imagescroll?>
 
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ListView?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ui.StartPageController">
@@ -74,7 +74,12 @@
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
                                                             prefWidth="200.0">
                                                     <children>
-                                                        <Label fx:id="iptclabel" text="IPTC Information"/>
+                                                        <ListView>
+                                                            <Label fx:id="keywords" text="Keywords"/>
+                                                            <Label fx:id="photographer" text="Photographer"/>
+                                                            <Label fx:id="headline" text="Headline"/>
+                                                            <Label fx:id="caption" text="Caption"/>
+                                                        </ListView>
                                                     </children>
                                                 </AnchorPane>
                                             </content>
@@ -84,7 +89,14 @@
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
                                                             prefWidth="200.0">
                                                     <children>
-                                                        <Label fx:id="exiflabel" text="EXIF Information"/>
+                                                        <ListView>
+                                                            <Label fx:id="camname"/>
+                                                            <Label fx:id="aperture"/>
+                                                            <Label fx:id="exposure_time"/>
+                                                            <Label fx:id="iso"/>
+                                                            <Label fx:id="focal_length"/>
+                                                            <Label fx:id="exposure_program"/>
+                                                        </ListView>
                                                     </children>
                                                 </AnchorPane>
                                             </content>

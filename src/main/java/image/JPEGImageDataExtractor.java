@@ -47,6 +47,10 @@ public class JPEGImageDataExtractor implements IImageDataExtractor{
             Date modifydate = null;
             int iso = 0;
             String keywords = null;
+            String aperture = null;
+            String model = null;
+            String focal_length = null;
+            String exposure = null;
 
             if(exifIFD0Directory != null){
 
@@ -61,12 +65,24 @@ public class JPEGImageDataExtractor implements IImageDataExtractor{
 
                 if(exifIFD0Directory.containsTag(EXIFID.ModifyDate))
                     modifydate = new Date(exifIFD0Directory.getDate(EXIFID.ModifyDate).getTime());
+
+                if (exifIFD0Directory.containsTag(exifIFD0Directory.TAG_MODEL))
+                    model = exifIFD0Directory.getString(exifIFD0Directory.TAG_MODEL);
             }
 
             if(exifSubIFDDirectory != null){
 
                 if(exifSubIFDDirectory.containsTag(EXIFID.ISO))
                     iso = exifSubIFDDirectory.getInt(EXIFID.ISO);
+
+                if (exifSubIFDDirectory.containsTag(exifSubIFDDirectory.TAG_APERTURE))
+                    aperture = String.valueOf(exifSubIFDDirectory.getDouble(exifSubIFDDirectory.TAG_APERTURE));
+
+                if (exifSubIFDDirectory.containsTag(exifSubIFDDirectory.TAG_FOCAL_LENGTH))
+                    focal_length = exifSubIFDDirectory.getString(exifSubIFDDirectory.TAG_FOCAL_LENGTH);
+
+                if (exifSubIFDDirectory.containsTag(exifSubIFDDirectory.TAG_EXPOSURE_TIME))
+                    exposure = exifSubIFDDirectory.getString(exifSubIFDDirectory.TAG_EXPOSURE_TIME);
             }
 
             if(iptcDirectory != null){
@@ -75,7 +91,7 @@ public class JPEGImageDataExtractor implements IImageDataExtractor{
                     keywords = iptcDirectory.getString(IPTCID.Keywords);
             }
 
-            res = new JPEGImageData(path, width, height, orientation, iso, modifydate, keywords);
+            res = new JPEGImageData(path, width, height, orientation, iso, modifydate, keywords, aperture, model, focal_length, exposure);
 
         } catch (ImageProcessingException e) {
             e.printStackTrace();

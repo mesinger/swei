@@ -56,7 +56,9 @@ public class Imagescroll extends ScrollPane {
 
                 if ((pane).getChildren().size() == 0) {
                     String path = ((ProxyAnchorPane) pane).getImagepath();
-                    addImage(new Image(path), pane);
+
+                    // This is just the preview, so we can compress the image for better performance
+                    addImage(new Image(path, 300, 300, true, false), pane);
                 }
 
             }
