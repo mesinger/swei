@@ -3,13 +3,22 @@ package ui;
 import database.PicDatabaseAccess;
 import image.IImageData;
 import image.JPEGImageDataExtractor;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +32,7 @@ public class StartPageController implements Initializable {
     public Label aperture;
     public Label focal_length;
     public Label exposure_program;
+    public MenuItem photographer_edit;
     @FXML
     private Imagescroll imgscroll;
 
@@ -68,6 +78,23 @@ public class StartPageController implements Initializable {
                     exposure_time.setText("Exposure time: " + image.getExposure());
                     focal_length.setText("Focal length: " + image.getFocal_length());
                     aperture.setText("Aperture: " + image.getAperture());
+                }
+            });
+
+            // Open photographer editing menu
+            photographer_edit.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    Parent root;
+                    try {
+                        root = FXMLLoader.load(getClass().getResource("photographers.fxml"), resources);
+                        Stage stage = new Stage();
+                        stage.setTitle("Photographers");
+                        stage.setScene(new Scene(root, 600, 600));
+                        stage.show();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } else {
