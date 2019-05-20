@@ -11,15 +11,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.apache.log4j.LogManager;
+import org.apache.log4j.BasicConfigurator;
 
 import java.sql.Date;
 
 public class Main extends Application {
 
     private static final Logger logger = LogManager.getLogger(Main.class);
+    BasicConfigurator basicConfigurator;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        basicConfigurator.configure();
+        logger.debug("Entering picdb ...");
 
         Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
         primaryStage.setTitle("SWEI");
