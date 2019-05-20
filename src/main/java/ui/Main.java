@@ -9,10 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
 import java.sql.Date;
 
 public class Main extends Application {
+
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception{
