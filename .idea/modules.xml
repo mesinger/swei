@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/picdb.iml" filepath="$PROJECT_DIR$/picdb.iml" />
-      <module fileurl="file://$PROJECT_DIR$/swei.iml" filepath="$PROJECT_DIR$/swei.iml" />
     </modules>
   </component>
 </project>
