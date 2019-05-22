@@ -2,16 +2,11 @@ package database;
 
 import image.IImageData;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
 
 public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSync, IDatabaseSetup {
 
-    /*
+    /**
     calls constructor of ISQLiteDatabaseAccess
      */
     public PicDatabaseAccess() {
@@ -67,6 +62,12 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
         }
     }
 
+    /**
+     * adds a image to the images table
+     *
+     * @param data
+     * @return success
+     */
     public boolean addImage(IImageData data){
 
         PreparedStatement stmt = null;
@@ -112,9 +113,48 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
         }
     }
 
+    public ResultSet getPhotographer(int id){
+
+        PreparedStatement stmt = null;
+
+        try {
+
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            stmt = conn.prepareStatement(PREPARED.PHOTOGRAPHER_SELECT_BY_ID);
+            stmt.setInt(1, id);
+
+            ResultSet result = stmt.executeQuery();
+
+            conn.commit();
+
+            conn.setAutoCommit(true);
+
+            return result;
+
+        } catch (SQLException e) {
+
+            System.err.println("SQL: Error while inserting row");
+            e.printStackTrace();
+
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        finally {
+
+            closeStatement(stmt);
+
+            return null;
+        }
+    }
+
     /**
      * setting up the pic database, creating all tables
-     * it they do not exist already
+     * if they do not exist already
      */
     @Override
     public void setup() {

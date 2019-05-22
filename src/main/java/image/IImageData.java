@@ -34,6 +34,7 @@ public abstract class IImageData {
 
         @Override
         public String toString() {
+
             switch (type){
                 case ORIENTATION.Horizontal:
                     return "Horizontal";

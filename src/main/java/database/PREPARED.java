@@ -43,4 +43,8 @@ interface PREPARED {
     String IMAGES_INSERT =
             "INSERT INTO images " +
                     "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+
+    String PHOTOGRAPHER_SELECT_BY_ID =
+            "SELECT FROM PHOTOGRAPHER " +
+                    "WHERE ID = ?;";
 }
