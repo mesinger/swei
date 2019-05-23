@@ -1,6 +1,6 @@
 package ui;
 
-import image.IImageData;
+import models.ImageModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -15,12 +15,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-import javax.imageio.metadata.IIOMetadata;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,14 +63,14 @@ public class Imagescroll extends ScrollPane {
         });
     }
 
-    public void addPlaceholderBox(IImageData image) {
+    public void addPlaceholderBox(ImageModel image) {
         AnchorPane anchorPane = new ProxyAnchorPane(image);
 
         // Bind the width to the height of the Imagescroll to simulate images with 1:1 aspect ratio
         anchorPane.prefWidthProperty().bind(heightProperty());
         anchorPane.setFocusTraversable(true);
 
-        // When an image is clicked, fire the custom ImageClickedEvent with the IImageData
+        // When an image is clicked, fire the custom ImageClickedEvent with the ImageModel
         anchorPane.setOnMouseClicked((EventHandler) -> {
             fireEvent(new ImageClickedEvent(image));
         });
@@ -114,11 +112,11 @@ public class Imagescroll extends ScrollPane {
 
 class ImageClickedEvent extends Event {
 
-    private IImageData image;
+    private ImageModel image;
 
     public static final EventType<ImageClickedEvent> IMAGE_CLICKED_EVENT_TYPE = new EventType<>(ANY);
 
-    public ImageClickedEvent(IImageData image) {
+    public ImageClickedEvent(ImageModel image) {
         super(IMAGE_CLICKED_EVENT_TYPE);
         this.image = image;
     }
@@ -131,7 +129,7 @@ class ImageClickedEvent extends Event {
 
 abstract class ImageClickedEventHandler implements EventHandler<ImageClickedEvent> {
 
-    public abstract void onClicked(IImageData image);
+    public abstract void onClicked(ImageModel image);
 
     @Override
     public void handle(ImageClickedEvent event) {

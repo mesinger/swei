@@ -1,10 +1,10 @@
 package ui;
 
-import image.IImageData;
+import models.ImageModel;
 import javafx.scene.layout.AnchorPane;
 
 public class ProxyAnchorPane extends AnchorPane {
-    public ProxyAnchorPane(IImageData image) {
+    public ProxyAnchorPane(ImageModel image) {
         this.image = image;
     }
 
@@ -20,5 +20,5 @@ public class ProxyAnchorPane extends AnchorPane {
         return String.valueOf(image.getIso());
     }
 
-    private IImageData image;
+    private ImageModel image;
 }

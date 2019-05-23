@@ -1,8 +1,8 @@
-package image;
+package models;
 
 import java.sql.Date;
 
-public abstract class IImageData {
+public abstract class ImageModel {
 
     protected String path;
     protected int width;
@@ -13,7 +13,7 @@ public abstract class IImageData {
     protected String keywords;
     protected String aperture;
     protected String model;
-    protected String focal_length;
+    protected String focalLength;
     protected String exposure;
 
     public String getAperture() {
@@ -24,16 +24,16 @@ public abstract class IImageData {
         return model;
     }
 
-    public String getFocal_length() {
-        return focal_length;
+    public String getFocalLength() {
+        return focalLength;
     }
 
     public String getExposure() {
         return exposure;
     }
 
-    public IImageData(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords,
-                      String aperture, String model, String focal_length, String exposure) {
+    public ImageModel(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords,
+                      String aperture, String model, String focalLength, String exposure) {
 
         this.path = path;
         this.width = (width < 0) ? -1 : width;
@@ -46,7 +46,7 @@ public abstract class IImageData {
 
         this.aperture = aperture;
         this.model = model;
-        this.focal_length = focal_length;
+        this.focalLength = focalLength;
         this.exposure = exposure;
     }
 
@@ -137,4 +137,16 @@ public abstract class IImageData {
     public String getKeywords() {
         return keywords;
     }
+}
+
+interface ORIENTATION {
+
+    int Horizontal = 1;
+    int Mirror_Horizontal = 2;
+    int Rotate_180 = 3;
+    int Mirror_Vertical = 4;
+    int Mirror_Horizontal_And_Rotate_270_CW = 5;
+    int Rotate_90_CW = 6;
+    int Mirror_Horizontal_And_Rotate_90_CW = 7;
+    int Rotate_270_CW = 8;
 }
