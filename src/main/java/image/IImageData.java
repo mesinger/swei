@@ -13,7 +13,7 @@ public abstract class IImageData {
     protected String keywords;
     protected String aperture;
     protected String model;
-    protected String focal_length;
+    protected String focalLength;
     protected String exposure;
 
     public String getAperture() {
@@ -24,8 +24,8 @@ public abstract class IImageData {
         return model;
     }
 
-    public String getFocal_length() {
-        return focal_length;
+    public String getFocalLength() {
+        return focalLength;
     }
 
     public String getExposure() {
@@ -46,7 +46,7 @@ public abstract class IImageData {
 
         this.aperture = aperture;
         this.model = model;
-        this.focal_length = focal_length;
+        this.focalLength = focal_length;
         this.exposure = exposure;
     }
 

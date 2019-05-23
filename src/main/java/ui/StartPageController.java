@@ -8,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -76,7 +75,7 @@ public class StartPageController implements Initializable {
                     camname.setText("Camera model: " + image.getModel());
                     iso.setText("ISO: " + image.getIso());
                     exposure_time.setText("Exposure time: " + image.getExposure());
-                    focal_length.setText("Focal length: " + image.getFocal_length());
+                    focal_length.setText("Focal length: " + image.getFocalLength());
                     aperture.setText("Aperture: " + image.getAperture());
                 }
             });
