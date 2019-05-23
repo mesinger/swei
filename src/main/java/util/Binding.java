@@ -1,9 +1,13 @@
-package utils;
+package util;
 
 import javafx.beans.property.Property;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import ui.Main;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -16,6 +20,10 @@ import java.util.regex.Pattern;
  * Created by arthur on 17.03.2016.
  */
 public class Binding {
+
+    private static final Logger logger = LogManager.getLogger(Binding.class);
+    BasicConfigurator basicConfigurator;
+
     public enum Mode {
         ONEWAY,
         TWOWAY,
@@ -35,6 +43,8 @@ public class Binding {
         this.node = node;
         this.binding = binding;
         this.mode = mode;
+
+        basicConfigurator.configure();
     }
 
     @Override
@@ -58,13 +68,13 @@ public class Binding {
     public static void setTwoWay(Node n, String binding) {
         Binding b = new Binding(n, binding, Mode.TWOWAY);
         addBinding(n, b);
-        System.out.println(String.format("Setting two way binding for %s", b));
+        logger.info(String.format("Setting two way binding for %s", b));
     }
 
     public static void setOneWay(Node n, String binding) {
         Binding b = new Binding(n, binding, Mode.ONEWAY);
         addBinding(n, b);
-        System.out.println(String.format("Setting one way binding for %s", b));
+        logger.info(String.format("Setting one way binding for %s", b));
     }
 
     public static void applyBinding(Node n, Object bean) {
@@ -87,19 +97,19 @@ public class Binding {
                                 if(dest != null) {
                                     dest.bind(sourceRO);
                                 } else {
-                                    System.out.print(String.format("Invalid binding %s, destination is not a Property<?>", b));
+                                    logger.info(String.format("Invalid binding %s, destination is not a Property<?>", b));
                                 }
                                 break;
                             case TWOWAY:
                                 if ((dest != null || destRO != null) && (source != null || sourceRO != null)) {
                                     dest.bindBidirectional(source);
                                 } else {
-                                    System.out.print(String.format("Invalid binding %s", b));
+                                    logger.info(String.format("Invalid binding %s", b));
                                     if (source == null) {
-                                        System.out.println(String.format(", source is not a Property<?>"));
+                                        logger.info(String.format(", source is not a Property<?>"));
                                     }
                                     if (dest == null) {
-                                        System.out.println(String.format(", destination is not a Property<?>"));
+                                        logger.info(String.format(", destination is not a Property<?>"));
                                     }
                                 }
                                 break;
@@ -107,19 +117,18 @@ public class Binding {
                                 if(source != null) {
                                     source.bind(destRO);
                                 } else {
-                                    System.out.print(String.format("Invalid binding %s, source is not a Property<?>", b));
+                                    logger.info(String.format("Invalid binding %s, source is not a Property<?>", b));
                                 }
                                 break;
                         }
                     } else {
-                        System.out.print(String.format("Invalid binding %s", b));
+                        logger.info(String.format("Invalid binding %s", b));
                         if (source == null && sourceRO == null) {
-                            System.out.println(String.format(", source property %s not found", sourceName));
+                            logger.info(String.format(", source property %s not found", sourceName));
                         }
                         if (dest == null && destRO == null) {
-                            System.out.println(String.format(", destination property %s not found", destName));
+                            logger.info(String.format(", destination property %s not found", destName));
                         }
-                        System.out.println();
                     }
                 }
             }
@@ -140,6 +149,6 @@ public class Binding {
      * @param n
      */
     public static void clearConstraints(Node n) {
-        System.out.println(String.format("clear all constrains for %s", n.getId()));
+        logger.info(String.format("clear all constrains for %s", n.getId()));
     }
 }

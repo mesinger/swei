@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 import javafx.beans.Observable;
 import javafx.beans.property.Property;
