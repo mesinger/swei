@@ -10,11 +10,74 @@ public abstract class ImageModel {
     protected Orientation orientation;
     protected int iso;
     protected Date modifyDate;
+    protected String title;
     protected String keywords;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getPhotographerID() {
+        return photographerID;
+    }
+
+    public void setPhotographerID(int photographerID) {
+        this.photographerID = photographerID;
+    }
+
+    protected int photographerID;
     protected String aperture;
     protected String model;
     protected String focalLength;
     protected String exposure;
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+
+    public void setIso(int iso) {
+        this.iso = iso;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public void setAperture(String aperture) {
+        this.aperture = aperture;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setFocalLength(String focalLength) {
+        this.focalLength = focalLength;
+    }
+
+    public void setExposure(String exposure) {
+        this.exposure = exposure;
+    }
 
     public String getAperture() {
         return aperture;
