@@ -1,13 +1,11 @@
 package database;
 
-import image.IImageData;
+import models.ImageModel;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSync, IDatabaseSetup {
 
@@ -67,7 +65,7 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
         }
     }
 
-    public boolean addImage(IImageData data){
+    public boolean addImage(ImageModel data){
 
         PreparedStatement stmt = null;
 

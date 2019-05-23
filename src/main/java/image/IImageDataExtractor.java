@@ -1,6 +1,8 @@
 package image;
 
+import models.ImageModel;
+
 public interface IImageDataExtractor {
 
-    IImageData extractExifAndIPTC(String path);
+    ImageModel extractExifAndIPTC(String path);
 }

@@ -1,7 +1,7 @@
 package ui;
 
 import database.PicDatabaseAccess;
-import image.IImageData;
+import models.ImageModel;
 import image.JPEGImageDataExtractor;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -60,7 +60,7 @@ public class StartPageController implements Initializable {
             JPEGImageDataExtractor dataExtractor = new JPEGImageDataExtractor();
 
             for (String image : imagePaths) {
-                IImageData data = dataExtractor.extractExifAndIPTC(image);
+                ImageModel data = dataExtractor.extractExifAndIPTC(image);
                 db.addImage(data);
 
                 // TODO: Don't use the data directly from the image file, get it from the database!
@@ -70,7 +70,7 @@ public class StartPageController implements Initializable {
             // Add event handler for when an image is clicked
             imgscroll.addEventHandler(ImageClickedEvent.IMAGE_CLICKED_EVENT_TYPE, new ImageClickedEventHandler() {
                 @Override
-                public void onClicked(IImageData image) {
+                public void onClicked(ImageModel image) {
                     imageView.setImage(new Image("file:///" + image.getPath())); // TODO: Move this 'file:///'
                     camname.setText("Camera model: " + image.getModel());
                     iso.setText("ISO: " + image.getIso());

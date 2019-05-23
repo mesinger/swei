@@ -1,9 +1,5 @@
 package ui;
 
-import database.PicDatabaseAccess;
-import image.IImageData;
-import image.JPEGImageData;
-import image.JPEGImageDataExtractor;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,8 +8,6 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.BasicConfigurator;
-
-import java.sql.Date;
 
 public class Main extends Application {
 
