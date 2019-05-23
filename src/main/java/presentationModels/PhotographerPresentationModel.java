@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import models.PhotographerModel;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 public class PhotographerPresentationModel {
@@ -18,7 +20,7 @@ public class PhotographerPresentationModel {
 
     private StringProperty notes = new SimpleStringProperty();
 
-    private ObjectProperty<Date> birthDate = new SimpleObjectProperty<>();
+    private ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();
 
     private StringBinding fullName;
 
@@ -41,14 +43,14 @@ public class PhotographerPresentationModel {
         firstName.setValue(model.getFirstName());
         surName.setValue(model.getSurName());
         notes.setValue(model.getNotes());
-        birthDate.setValue(model.getBirthDate());
+        birthDate.setValue(model.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     }
 
     public void saveDataToModel() {
         model.setFirstName(firstName.getValue());
         model.setSurName(surName.getValue());
         model.setNotes(notes.getValue());
-        model.setBirthDate(birthDate.getValue());
+        model.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     }
 
     public String getFirstName() {
@@ -87,17 +89,20 @@ public class PhotographerPresentationModel {
         this.notes.set(notes);
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate.get();
     }
 
-    public ObjectProperty<Date> birthDateProperty() {
+    public ObjectProperty<LocalDate> birthDateProperty() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate.set(birthDate);
     }
 
-
+    public boolean isValid() {
+        return (getSurName() != null && !getSurName().isEmpty() && getBirthDate() != null &&
+                getBirthDate().isBefore(LocalDate.now()));
+    }
 }

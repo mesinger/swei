@@ -1,8 +1,6 @@
 package ui;
 
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -13,7 +11,6 @@ import models.PhotographerModel;
 import presentationModels.PhotographerPresentationModel;
 import util.Binding;
 
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -30,11 +27,6 @@ public class PhotographersController implements Initializable {
     public TextField notes;
     public Button saveButton;
 
-    private boolean allFieldsValid() {
-        return (!lastName.getText().isEmpty() && dateOfBirth.getValue() != null && dateOfBirth.getValue().isBefore(LocalDate.now()));
-    }
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         saveButton.setDisable(true);
@@ -48,13 +40,12 @@ public class PhotographersController implements Initializable {
 
         Binding.applyBinding(photographerData, presModel);
 
-        ChangeListener textChangedListener = (observable, oldValue, newValue) -> saveButton.setDisable(!allFieldsValid());
+        ChangeListener textChangedListener = (observable, oldValue, newValue) ->
+                saveButton.setDisable(!presModel.isValid());
 
         firstName.textProperty().addListener(textChangedListener);
         lastName.textProperty().addListener(textChangedListener);
         dateOfBirth.valueProperty().addListener(textChangedListener);
 
     }
-
-
 }
