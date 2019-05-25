@@ -50,7 +50,10 @@ public class PhotographerPresentationModel {
         model.setFirstName(firstName.getValue());
         model.setSurName(surName.getValue());
         model.setNotes(notes.getValue());
-        model.setBirthDate((Date) Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        java.util.Date util_date = (java.util.Date) Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sql_date = new java.sql.Date(util_date.getTime());
+        model.setBirthDate(sql_date);
     }
 
     public String getFirstName() {
