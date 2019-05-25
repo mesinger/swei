@@ -1,55 +1,25 @@
 package models;
 
-import java.util.Date;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.sql.Date;
+
+@Getter @Setter
+@NoArgsConstructor
 public class PhotographerModel {
 
     private String firstName;
     private String surName;
     private Date birthDate;
     private String notes;
+    @Setter(AccessLevel.PRIVATE)
     private int id;
 
     public PhotographerModel(int id) {
         this.id = id;
-    }
-
-    public PhotographerModel() {}
-
-    public int getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSurName() {
-        return surName;
-    }
-
-    public void setSurName(String surName) {
-        this.surName = surName;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
     }
 
     // For debugging

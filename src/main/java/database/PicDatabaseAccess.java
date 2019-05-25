@@ -1,68 +1,21 @@
 package database;
 
 import models.ImageModel;
+import models.PhotographerModel;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
-public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSync, IDatabaseSetup {
+public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSetup, IPhotographerDAL {
 
     /*
     calls constructor of ISQLiteDatabaseAccess
      */
     public PicDatabaseAccess() {
         super("picdb");
-    }
-
-    /**
-     * adds a photographer to the database
-     * @param firstname
-     * @param surname
-     * @param dateofbirth
-     * @param address
-     */
-    public boolean addPhotographer(final String firstname, final String surname, final Date dateofbirth, final String address) {
-
-        PreparedStatement stmt = null;
-
-        try {
-
-            conn.setAutoCommit(false);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-
-            stmt = conn.prepareStatement(PREPARED.PHOTOGRAPHER_INSERT);
-            stmt.setString(1, firstname);
-            stmt.setString(2, surname);
-            stmt.setDate(3, dateofbirth);
-            stmt.setString(4, address);
-
-            int result = stmt.executeUpdate();
-
-            conn.commit();
-
-            conn.setAutoCommit(true);
-
-            return result == 1;
-
-        } catch (SQLException e) {
-
-            System.err.println("SQL: Error while inserting row");
-            e.printStackTrace();
-
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
-        finally {
-
-            closeStatement(stmt);
-
-            return false;
-        }
     }
 
     public boolean addImage(ImageModel data){
@@ -110,6 +63,59 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
         }
     }
 
+
+
+    @Override
+    public List<PhotographerModel> getAllPhotographers() {
+        return null;
+    }
+
+    @Override
+    public void addPhotographer(PhotographerModel photographer) {
+
+        PreparedStatement stmt = null;
+
+        try {
+
+            prepareConnectionForStatement(false, Connection.TRANSACTION_SERIALIZABLE);
+
+            stmt = prepareStatementForCommit(
+                    PREPARED.PHOTOGRAPHER_INSERT,
+                    new StatementParam<>(photographer.getFirstName(), String.class),
+                    new StatementParam<>(photographer.getSurName(), String.class),
+                    new StatementParam<>(photographer.getBirthDate(), Date.class),
+                    new StatementParam<>(photographer.getNotes(), String.class)
+            );
+
+            stmt.executeUpdate();
+
+            commitStatement(true);
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
+        }
+        finally {
+
+            closeStatement(stmt);
+        }
+    }
+
+    @Override
+    public PhotographerModel getPhotographer(int id) {
+        return null;
+    }
+
+    @Override
+    public void editPhotographer(PhotographerModel model) {
+
+    }
+
+    @Override
+    public void deletePhotographer(int id) {
+
+    }
+
     /**
      * setting up the pic database, creating all tables
      * it they do not exist already
@@ -122,63 +128,29 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
         try {
 
-            conn.setAutoCommit(false);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            prepareConnectionForStatement(false, Connection.TRANSACTION_SERIALIZABLE);
 
-            int resultUpdate;
+            createPhotographer = prepareStatementForCommit(
+                    PREPARED.PHOTOGRAPHER_CREATE
+            );
 
-            //create photographer table
-            createPhotographer = conn.prepareStatement(PREPARED.PHOTOGRAPHER_CREATE);
-            resultUpdate = createPhotographer.executeUpdate();
+            createPhotographer.executeUpdate();
 
-            //create images table
-            createImages = conn.prepareStatement(PREPARED.IMAGES_CREATE);
-            resultUpdate = createImages.executeUpdate();
+            createImages = prepareStatementForCommit(
+                    PREPARED.IMAGES_CREATE
+            );
 
-            conn.commit();
+            createImages.executeUpdate();
 
-        } catch (SQLException e) {
+            commitStatement(true);
 
-            System.err.println("SQL: Error while setting up database");
-            e.printStackTrace();
+        } catch (SQLException ex) {
 
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
+            handleExeption(ex);
         }finally {
 
-            try {
-
-                if(createPhotographer != null)
-                    createPhotographer.close();
-
-                if(createImages != null)
-                    createImages.close();
-
-                conn.setAutoCommit(true);
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public boolean sync() {
-        return false;
-    }
-
-    private void closeStatement(PreparedStatement stmt) {
-        try{
-
-            conn.setAutoCommit(true);
-
-            if(stmt != null)
-                stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            closeStatement(createPhotographer);
+            closeStatement(createImages);
         }
     }
 }

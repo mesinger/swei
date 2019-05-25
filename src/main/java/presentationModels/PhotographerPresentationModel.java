@@ -9,7 +9,7 @@ import models.PhotographerModel;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
+import java.sql.Date;
 
 public class PhotographerPresentationModel {
     private PhotographerModel model;
@@ -50,7 +50,7 @@ public class PhotographerPresentationModel {
         model.setFirstName(firstName.getValue());
         model.setSurName(surName.getValue());
         model.setNotes(notes.getValue());
-        model.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        model.setBirthDate((Date) Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     }
 
     public String getFirstName() {
