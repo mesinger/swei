@@ -8,7 +8,7 @@ import java.util.List;
 
 // TODO: implements all IDALs
 public class MockDAL implements IPhotographerDAL {
-    private HashMap<Integer, PhotographerModel> photographers;
+    private HashMap<Integer, PhotographerModel> photographers = new HashMap<>();
     private int incrementingId = 1;
 
 
@@ -50,6 +50,7 @@ public class MockDAL implements IPhotographerDAL {
         newPhotographer.setNotes(photographer.getNotes());
         newPhotographer.setFirstName(photographer.getFirstName());
         newPhotographer.setSurName(photographer.getSurName());
+        newPhotographer.setDal(this);
 
         return newPhotographer;
     }

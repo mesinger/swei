@@ -1,5 +1,6 @@
 package models;
 
+import database.IPhotographerDAL;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,22 @@ public class PhotographerModel {
     private String notes;
     @Setter(AccessLevel.PRIVATE)
     private int id;
+    private IPhotographerDAL dal;
 
     public PhotographerModel(int id) {
         this.id = id;
+    }
+
+    public void save() {
+        if (dal == null) {
+            throw new IllegalStateException("Can't save model without a DAL!");
+        }
+
+        if (id == 0) {
+            dal.addPhotographer(this);
+        } else {
+            dal.editPhotographer(this);
+        }
     }
 
     // For debugging

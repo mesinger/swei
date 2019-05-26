@@ -22,6 +22,14 @@ public class PhotographerPresentationModel {
 
     private ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();
 
+    public String getFullName() {
+        return fullName.get();
+    }
+
+    public StringBinding fullNameProperty() {
+        return fullName;
+    }
+
     private StringBinding fullName;
 
 
@@ -43,7 +51,7 @@ public class PhotographerPresentationModel {
         firstName.setValue(model.getFirstName());
         surName.setValue(model.getSurName());
         notes.setValue(model.getNotes());
-        birthDate.setValue(model.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        birthDate.setValue(model.getBirthDate().toLocalDate());
     }
 
     public void saveDataToModel() {
@@ -54,6 +62,8 @@ public class PhotographerPresentationModel {
         java.util.Date util_date = (java.util.Date) Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sql_date = new java.sql.Date(util_date.getTime());
         model.setBirthDate(sql_date);
+
+        model.save();
     }
 
     public String getFirstName() {
