@@ -31,6 +31,7 @@ public class PhotographersController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Button is disabled when input is invalid
+        // FIXME: Button only gets enabled after field has been modified twice!
         ChangeListener textChangedListener = (observable, oldValue, newValue) ->
                 saveButton.setDisable(!presModel.isValid());
 
@@ -65,7 +66,7 @@ public class PhotographersController implements Initializable {
                     var presentation = new PhotographerPresentationModel(photographer);
                     presentation.loadDataFromModel();
                     super.updateItem(photographer, empty);
-                    setText(empty ? null : presentation.getFullName());
+                    setText(presentation.getFullName());
                 }
             }
         });
@@ -73,9 +74,11 @@ public class PhotographersController implements Initializable {
         // When an item is clicked, a presentation model is created for it and bound to the fields
         photographerList.getSelectionModel().selectedItemProperty().addListener(
                 (ChangeListener<PhotographerModel>) (observable, oldValue, newValue) -> {
-                    presModel = new PhotographerPresentationModel(newValue);
-                    presModel.loadDataFromModel();
-                    Binding.applyBinding(photographerData, presModel);
+                    if (newValue != null) {
+                        presModel = new PhotographerPresentationModel(newValue);
+                        presModel.loadDataFromModel();
+                        Binding.applyBinding(photographerData, presModel);
+                    }
         });
     }
 
