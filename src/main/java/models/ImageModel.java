@@ -13,6 +13,18 @@ public abstract class ImageModel {
     protected String title;
     protected String keywords;
 
+    public int getId() {
+        return id;
+    }
+
+    protected int id;
+
+    public ImageModel() {}
+
+    public ImageModel(int id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
