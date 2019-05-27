@@ -21,7 +21,7 @@ interface PREPARED {
             "firstname VARCHAR(255) NOT NULL," +
             "surname VARCHAR(255) NOT NULL," +
             "dateofbirth DATE NOT NULL," +
-            "address VARCHAR(255)" +
+            "notes VARCHAR(255)" +
             ");";
 
     String PHOTOGRAPHER_INSERT =

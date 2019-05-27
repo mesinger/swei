@@ -7,13 +7,10 @@ import java.sql.SQLException;
 /**
  * base class for connections to sqlite databases
  */
-abstract class ISQLiteDatabaseAccess implements IDatabaseConnection {
+abstract class ISQLiteDatabaseAccess extends IDatabaseAccess {
 
     //class name for jdbc connector
     private final static String JDBC_CLASSNAME = "org.sqlite.JDBC";
-
-    //connection instance
-    protected Connection conn;
 
     //database name
     protected final String databaseName;

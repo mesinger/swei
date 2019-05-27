@@ -50,6 +50,7 @@ public class MockDAL implements IPhotographerDAL {
         newPhotographer.setNotes(photographer.getNotes());
         newPhotographer.setFirstName(photographer.getFirstName());
         newPhotographer.setSurName(photographer.getSurName());
+        newPhotographer.setDal(this);
 
         return newPhotographer;
     }

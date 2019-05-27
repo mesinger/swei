@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.fxml.Initializable;
 import models.ImageModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -20,10 +21,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class Imagescroll extends ScrollPane {
+public class Imagescroll extends ScrollPane implements Initializable {
 
     @FXML
     private HBox imageBox;
@@ -42,25 +45,6 @@ public class Imagescroll extends ScrollPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-
-        // When a ProxyAnchorPane becomes visible, the corresponding image is put into it
-        // TODO: It would be nice if we could do this in the ProxyAnchorPane, not here!
-        vvalueProperty().addListener((obs) -> checkVisible());
-        hvalueProperty().addListener((obs) -> checkVisible());
-
-        visibleNodes.addListener((ListChangeListener<Node>) c -> {
-            for (Node node : visibleNodes) {
-                Pane pane = (Pane) node;
-
-                if ((pane).getChildren().size() == 0) {
-                    String path = ((ProxyAnchorPane) pane).getImagepath();
-
-                    // This is just the preview, so we can compress the image for better performance
-                    addImage(new Image(path, 300, 300, true, false), pane);
-                }
-
-            }
-        });
     }
 
     public void addPlaceholderBox(ImageModel image) {
@@ -107,6 +91,41 @@ public class Imagescroll extends ScrollPane {
         }
 
         return visibleNodes;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // When a ProxyAnchorPane becomes visible, the corresponding image is put into it
+        // TODO: It would be nice if we could do this in the ProxyAnchorPane, not here!
+        vvalueProperty().addListener((obs) -> checkVisible());
+        hvalueProperty().addListener((obs) -> checkVisible());
+
+        visibleNodes.addListener((ListChangeListener<Node>) c -> {
+            for (Node node : visibleNodes) {
+                Pane pane = (Pane) node;
+
+                if ((pane).getChildren().size() == 0) {
+                    String path = ((ProxyAnchorPane) pane).getImagepath();
+
+                    // This is just the preview, so we can compress the image for better performance
+                    addImage(new Image(path, 300, 300, true, false), pane);
+                }
+
+            }
+        });
+    }
+
+    //zazcek hotfix for scrollview
+    private boolean isInitialized = false;
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+
+        if(!isInitialized){
+            isInitialized = true;
+            checkVisible();
+        }
     }
 }
 

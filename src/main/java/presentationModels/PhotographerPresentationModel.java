@@ -9,7 +9,7 @@ import models.PhotographerModel;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
+import java.sql.Date;
 
 public class PhotographerPresentationModel {
     private PhotographerModel model;
@@ -21,6 +21,14 @@ public class PhotographerPresentationModel {
     private StringProperty notes = new SimpleStringProperty();
 
     private ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();
+
+    public String getFullName() {
+        return fullName.get();
+    }
+
+    public StringBinding fullNameProperty() {
+        return fullName;
+    }
 
     private StringBinding fullName;
 
@@ -43,14 +51,19 @@ public class PhotographerPresentationModel {
         firstName.setValue(model.getFirstName());
         surName.setValue(model.getSurName());
         notes.setValue(model.getNotes());
-        birthDate.setValue(model.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        birthDate.setValue(model.getBirthDate().toLocalDate());
     }
 
     public void saveDataToModel() {
         model.setFirstName(firstName.getValue());
         model.setSurName(surName.getValue());
         model.setNotes(notes.getValue());
-        model.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        java.util.Date util_date = (java.util.Date) Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sql_date = new java.sql.Date(util_date.getTime());
+        model.setBirthDate(sql_date);
+
+        model.save();
     }
 
     public String getFirstName() {

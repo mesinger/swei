@@ -1,55 +1,39 @@
 package models;
 
-import java.util.Date;
+import database.IPhotographerDAL;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.sql.Date;
+
+@Getter @Setter
+@NoArgsConstructor
 public class PhotographerModel {
 
     private String firstName;
     private String surName;
     private Date birthDate;
     private String notes;
+    @Setter(AccessLevel.PRIVATE)
     private int id;
+    private IPhotographerDAL dal;
 
     public PhotographerModel(int id) {
         this.id = id;
     }
 
-    public PhotographerModel() {}
+    public void save() {
+        if (dal == null) {
+            throw new IllegalStateException("Can't save model without a DAL!");
+        }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSurName() {
-        return surName;
-    }
-
-    public void setSurName(String surName) {
-        this.surName = surName;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+        if (id == 0) {
+            dal.addPhotographer(this);
+        } else {
+            dal.editPhotographer(this);
+        }
     }
 
     // For debugging
