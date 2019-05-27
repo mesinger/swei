@@ -3,11 +3,11 @@ package database;
 import models.ImageModel;
 import models.PhotographerModel;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSetup, IPhotographerDAL {
 
@@ -16,58 +16,43 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
      */
     public PicDatabaseAccess() {
         super("picdb");
+        translator = new PicDbModelTranslator();
     }
 
-    public boolean addImage(ImageModel data){
+    private PicDbModelTranslator translator;
+
+    @Override
+    public List<PhotographerModel> getAllPhotographers() {
 
         PreparedStatement stmt = null;
+        var photographer = new ArrayList<PhotographerModel>();
 
         try {
 
-            conn.setAutoCommit(false);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            prepareConnectionForStatement(false, Connection.TRANSACTION_READ_COMMITTED);
 
-            stmt = conn.prepareStatement(PREPARED.IMAGES_INSERT);
-            stmt.setString(1, data.getPath());
-            stmt.setInt(2, data.getWidth());
-            stmt.setInt(3, data.getHeight());
-            stmt.setInt(4, data.getOrientation().getType());
-            stmt.setInt(5, data.getIso());
-            stmt.setDate(6, data.getModifyDate());
-            stmt.setString(7, data.getKeywords());
+            stmt = prepareStatementForCommit(
+                    PREPARED.PHOTOGRAPHER_SELECT_ALL
+            );
 
-            int result = stmt.executeUpdate();
+            var result = stmt.executeQuery();
 
-            conn.commit();
+            commitStatement(true);
 
-            conn.setAutoCommit(true);
-
-            return result == 1;
-
-        } catch (SQLException e) {
-
-            System.err.println("SQL: Error while inserting row");
-            e.printStackTrace();
-
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
+            while(result. next()){
+                photographer.add(translator.resultSetToPhotographModel(result));
             }
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
         }
         finally {
 
             closeStatement(stmt);
-
-            return false;
         }
-    }
 
-
-
-    @Override
-    public List<PhotographerModel> getAllPhotographers() {
-        return null;
+        return photographer;
     }
 
     @Override
@@ -103,17 +88,96 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
     @Override
     public PhotographerModel getPhotographer(int id) {
-        return null;
+
+        PreparedStatement stmt = null;
+        PhotographerModel model = new PhotographerModel();
+
+        try {
+
+            prepareConnectionForStatement(false, Connection.TRANSACTION_READ_COMMITTED);
+
+            stmt = prepareStatementForCommit(
+                    PREPARED.PHOTOGRAPHER_SELECT_BY_ID,
+                    new StatementParam(id, Integer.class)
+            );
+
+            var result = stmt.executeQuery();
+
+            commitStatement(true);
+
+            if(result.next())
+                model = translator.resultSetToPhotographModel(result);
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
+        }
+        finally {
+
+            closeStatement(stmt);
+        }
+
+        return model;
     }
 
     @Override
     public void editPhotographer(PhotographerModel model) {
 
+        PreparedStatement stmt = null;
+
+        try {
+
+            prepareConnectionForStatement(false, Connection.TRANSACTION_SERIALIZABLE);
+
+            stmt = prepareStatementForCommit(
+                    PREPARED.PHOTOGRAPHER_UPDATE,
+                    new StatementParam(model.getFirstName(), String.class),
+                    new StatementParam(model.getSurName(), String.class),
+                    new StatementParam(model.getBirthDate(), Date.class),
+                    new StatementParam(model.getNotes(), String.class),
+                    new StatementParam(model.getId(), Integer.class)
+            );
+
+            stmt.executeUpdate();
+
+            commitStatement(true);
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
+        }
+        finally {
+
+            closeStatement(stmt);
+        }
     }
 
     @Override
     public void deletePhotographer(int id) {
 
+        PreparedStatement stmt = null;
+
+        try {
+
+            prepareConnectionForStatement(false, Connection.TRANSACTION_SERIALIZABLE);
+
+            stmt = prepareStatementForCommit(
+                    PREPARED.PHOTOGRAPHER_DELETE,
+                    new StatementParam(id, Integer.class)
+            );
+
+            stmt.executeUpdate();
+
+            commitStatement(true);
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
+        }
+        finally {
+
+            closeStatement(stmt);
+        }
     }
 
     /**
