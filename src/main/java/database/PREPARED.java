@@ -32,11 +32,17 @@ interface PREPARED {
             "CREATE TABLE IF NOT EXISTS images (" +
                     "id INTEGER PRIMARY KEY," +
                     "filepath VARCHAR(255) NOT NULL," +
+                    "title VARCHAR(255) NOT NULL," +
                     "width INTEGER NULL," +
                     "height INTEGER NULL," +
                     "orientation INTEGER NULL," +
                     "iso INTEGER NULL," +
+                    "fk_photographer INTEGER NOT NULL," +
                     "modifyDate DATETIME NULL," +
+                    "aperture VARCHAR(255) NULL" +
+                    "model VARCHAR(255) NULL" +
+                    "focalLength VARCHAR(255) NULL" +
+                    "exposure VARCHAR(255) NULL" +
                     "keywords VARCHAR(255) NULL" +
                     ");";
 

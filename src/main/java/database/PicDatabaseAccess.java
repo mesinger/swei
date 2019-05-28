@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSetup, IPhotographerDAL, IImageDAL {
 
@@ -195,71 +196,118 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
     @Override
     public List<ImageModel> getAllImages() {
-        return null;
+
+        PreparedStatement stmt = null;
+        var images = new ArrayList<ImageModel>();
+
+        try {
+
+            prepareConnectionForStatement(false, Connection.TRANSACTION_READ_COMMITTED);
+
+            stmt = prepareStatementForCommit(
+                    PREPARED.IMAGES_SELECT_ALL
+            );
+
+            var result = stmt.executeQuery();
+
+            commitStatement(true);
+
+            while(result. next()){
+                images.add(translator.resultSetToJPEGImageModel(result));
+            }
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
+        }
+        finally {
+
+            closeStatement(stmt);
+        }
+
+        return images;
     }
 
     @Override
     public List<ImageModel> getByKeyword(String keyword) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> img.getKeywords().contains(keyword))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ImageModel> getByTitle(String title) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> img.getTitle().equals(title))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ImageModel> getByPhotographer(int photographerID) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> img.getPhotographerID() == photographerID)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ImageModel> getByIso(String iso) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> Integer.toString(img.getIso()).equals(iso))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ImageModel> getByAperture(String aperture) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> img.getAperture().equals(aperture))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ImageModel> getByModel(String model) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> img.getModel().equals(model))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ImageModel> getByFocalLength(String focalLength) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> img.getFocalLength().equals(focalLength))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ImageModel> getByExposure(String exposure) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> img.getExposure().equals(exposure))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void addImage(ImageModel img) {
-
+        //TODO
     }
 
     @Override
     public ImageModel getImage(int id) {
-        return null;
+        return getAllImages().parallelStream()
+                .filter(img -> img.getId() == id)
+                .findFirst().orElse(null);
     }
 
     @Override
     public void editImage(ImageModel model) {
-
+        //TODO
     }
 
     @Override
     public void deleteImage(int id) {
-
+        //TODO
     }
 
     @Override
     public void clearImages() {
-
+        //TODO
     }
 }

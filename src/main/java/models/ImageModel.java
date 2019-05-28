@@ -1,110 +1,34 @@
 package models;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.sql.Date;
 
+@Getter @Setter
+@NoArgsConstructor
 public abstract class ImageModel {
 
     protected String path;
     protected int width;
     protected int height;
+    @Setter(AccessLevel.PRIVATE)
     protected Orientation orientation;
     protected int iso;
     protected Date modifyDate;
     protected String title;
     protected String keywords;
-
-    public int getId() {
-        return id;
-    }
-
     protected int id;
-
-    public ImageModel() {}
-
-    public ImageModel(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getPhotographerID() {
-        return photographerID;
-    }
-
-    public void setPhotographerID(int photographerID) {
-        this.photographerID = photographerID;
-    }
-
     protected int photographerID;
     protected String aperture;
     protected String model;
     protected String focalLength;
     protected String exposure;
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setOrientation(Orientation orientation) {
-        this.orientation = orientation;
-    }
-
-    public void setIso(int iso) {
-        this.iso = iso;
-    }
-
-    public void setModifyDate(Date modifyDate) {
-        this.modifyDate = modifyDate;
-    }
-
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
-    }
-
-    public void setAperture(String aperture) {
-        this.aperture = aperture;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public void setFocalLength(String focalLength) {
-        this.focalLength = focalLength;
-    }
-
-    public void setExposure(String exposure) {
-        this.exposure = exposure;
-    }
-
-    public String getAperture() {
-        return aperture;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public String getFocalLength() {
-        return focalLength;
-    }
-
-    public String getExposure() {
-        return exposure;
+    public ImageModel(int id) {
+        this.id = id;
     }
 
     public ImageModel(String path, int width, int height, int orientation, int iso, Date modifyDate, String keywords,
@@ -123,6 +47,10 @@ public abstract class ImageModel {
         this.model = model;
         this.focalLength = focalLength;
         this.exposure = exposure;
+    }
+
+    public void setOrientation(int orientation){
+        this.orientation = new Orientation(orientation);
     }
 
     public final class Orientation{
@@ -183,34 +111,6 @@ public abstract class ImageModel {
         public String toString() {
             return Integer.toString(x) + ":" + Integer.toString(y);
         }
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
-    public int getIso() {
-        return iso;
-    }
-
-    public Date getModifyDate() {
-        return modifyDate;
-    }
-
-    public String getKeywords() {
-        return keywords;
     }
 }
 
