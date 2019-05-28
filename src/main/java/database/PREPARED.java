@@ -47,10 +47,6 @@ interface PREPARED {
     String PHOTOGRAPHER_SELECT_ALL =
             "SELECT * FROM photographer;";
 
-    String PHOTOGRAPHER_SELECT_BY_ID =
-            "SELECT * FROM photographer " +
-                    "WHERE id = ?;";
-
     String PHOTOGRAPHER_UPDATE =
             "UPDATE photographer" +
                     "SET firstname = ?, surname = ?, dateofbirth = ?, notes = ?" +
@@ -59,4 +55,7 @@ interface PREPARED {
     String PHOTOGRAPHER_DELETE =
             "DELETE FROM photographer" +
                     "WHERE id = ?;";
+
+    String IMAGES_SELECT_ALL =
+            "SELECT * FROM images;";
 }

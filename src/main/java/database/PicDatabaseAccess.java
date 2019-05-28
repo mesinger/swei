@@ -3,13 +3,14 @@ package database;
 import models.ImageModel;
 import models.PhotographerModel;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
-public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSetup, IPhotographerDAL {
+public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSetup, IPhotographerDAL, IImageDAL {
 
     /*
     calls constructor of ISQLiteDatabaseAccess
@@ -89,35 +90,9 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
     @Override
     public PhotographerModel getPhotographer(int id) {
 
-        PreparedStatement stmt = null;
-        PhotographerModel model = new PhotographerModel();
-
-        try {
-
-            prepareConnectionForStatement(false, Connection.TRANSACTION_READ_COMMITTED);
-
-            stmt = prepareStatementForCommit(
-                    PREPARED.PHOTOGRAPHER_SELECT_BY_ID,
-                    new StatementParam(id, Integer.class)
-            );
-
-            var result = stmt.executeQuery();
-
-            commitStatement(true);
-
-            if(result.next())
-                model = translator.resultSetToPhotographModel(result);
-
-        } catch (SQLException ex) {
-
-            handleExeption(ex);
-        }
-        finally {
-
-            closeStatement(stmt);
-        }
-
-        return model;
+        return getAllPhotographers().stream()
+                .filter(photographer -> photographer.getId() == id)
+                .findFirst().orElse(null);
     }
 
     @Override
@@ -216,5 +191,75 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
             closeStatement(createPhotographer);
             closeStatement(createImages);
         }
+    }
+
+    @Override
+    public List<ImageModel> getAllImages() {
+        return null;
+    }
+
+    @Override
+    public List<ImageModel> getByKeyword(String keyword) {
+        return null;
+    }
+
+    @Override
+    public List<ImageModel> getByTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public List<ImageModel> getByPhotographer(int photographerID) {
+        return null;
+    }
+
+    @Override
+    public List<ImageModel> getByIso(String iso) {
+        return null;
+    }
+
+    @Override
+    public List<ImageModel> getByAperture(String aperture) {
+        return null;
+    }
+
+    @Override
+    public List<ImageModel> getByModel(String model) {
+        return null;
+    }
+
+    @Override
+    public List<ImageModel> getByFocalLength(String focalLength) {
+        return null;
+    }
+
+    @Override
+    public List<ImageModel> getByExposure(String exposure) {
+        return null;
+    }
+
+    @Override
+    public void addImage(ImageModel img) {
+
+    }
+
+    @Override
+    public ImageModel getImage(int id) {
+        return null;
+    }
+
+    @Override
+    public void editImage(ImageModel model) {
+
+    }
+
+    @Override
+    public void deleteImage(int id) {
+
+    }
+
+    @Override
+    public void clearImages() {
+
     }
 }
