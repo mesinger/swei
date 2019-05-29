@@ -62,8 +62,6 @@ public class PhotographerPresentationModel {
         java.util.Date util_date = (java.util.Date) Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sql_date = new java.sql.Date(util_date.getTime());
         model.setBirthDate(sql_date);
-
-        model.save();
     }
 
     public String getFirstName() {

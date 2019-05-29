@@ -38,24 +38,28 @@ interface PREPARED {
                     "orientation INTEGER NULL," +
                     "iso INTEGER NULL," +
                     "fk_photographer INTEGER NOT NULL," +
-                    "modifyDate DATETIME NULL," +
+                    "modifydate DATETIME NULL," +
                     "aperture VARCHAR(255) NULL" +
                     "model VARCHAR(255) NULL" +
-                    "focalLength VARCHAR(255) NULL" +
+                    "focallength VARCHAR(255) NULL" +
                     "exposure VARCHAR(255) NULL" +
                     "keywords VARCHAR(255) NULL" +
                     ");";
 
     String IMAGES_INSERT =
             "INSERT INTO images " +
-                    "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+                    "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     String PHOTOGRAPHER_SELECT_ALL =
             "SELECT * FROM photographer;";
 
     String PHOTOGRAPHER_UPDATE =
-            "UPDATE photographer" +
-                    "SET firstname = ?, surname = ?, dateofbirth = ?, notes = ?" +
+            "UPDATE photographer " +
+                    "SET " +
+                    "firstname = ?, " +
+                    "surname = ?, " +
+                    "dateofbirth = ?, " +
+                    "notes = ? " +
                     "WHERE id = ?;";
 
     String PHOTOGRAPHER_DELETE =
@@ -64,4 +68,26 @@ interface PREPARED {
 
     String IMAGES_SELECT_ALL =
             "SELECT * FROM images;";
+
+    String IMAGES_UPDATE =
+            "UPDATE images " +
+                    "SET " +
+                    "filepath = ?, " +
+                    "title = ?, " +
+                    "width = ?, " +
+                    "height = ?, " +
+                    "orientation = ?, " +
+                    "iso = ?, " +
+                    "fk_photographer = ?, " +
+                    "modifydate = ?, " +
+                    "aperture = ?, " +
+                    "model = ?, " +
+                    "focallength = ?, " +
+                    "exposure = ?, " +
+                    "keywords = ? " +
+                    "WHERE id = ?;";
+
+    String IMAGES_DELETE =
+            "DELETE FROM images " +
+                    "WHERE id = ?;";
 }

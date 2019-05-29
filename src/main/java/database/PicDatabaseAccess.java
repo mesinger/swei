@@ -286,7 +286,43 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
     @Override
     public void addImage(ImageModel img) {
-        //TODO
+
+        PreparedStatement stmt = null;
+
+        try {
+
+            prepareConnectionForStatement(false, Connection.TRANSACTION_SERIALIZABLE);
+
+            stmt = prepareStatementForCommit(
+                    PREPARED.IMAGES_INSERT,
+                    new StatementParam<>(img.getId(), Integer.class),
+                    new StatementParam<>(img.getPath(), String.class),
+                    new StatementParam<>(img.getTitle(), String.class),
+                    new StatementParam<>(img.getWidth(), Integer.class),
+                    new StatementParam<>(img.getHeight(), Integer.class),
+                    new StatementParam<>(img.getOrientation(), Integer.class),
+                    new StatementParam<>(img.getIso(), Integer.class),
+                    new StatementParam<>(img.getPhotographerID(), Integer.class),
+                    new StatementParam<>(img.getModifyDate(), Date.class),
+                    new StatementParam<>(img.getAperture(), String.class),
+                    new StatementParam<>(img.getModel(), String.class),
+                    new StatementParam<>(img.getFocalLength(), String.class),
+                    new StatementParam<>(img.getExposure(), String.class),
+                    new StatementParam<>(img.getKeywords(), String.class)
+            );
+
+            stmt.executeUpdate();
+
+            commitStatement(true);
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
+        }
+        finally {
+
+            closeStatement(stmt);
+        }
     }
 
     @Override
@@ -297,17 +333,77 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
     }
 
     @Override
-    public void editImage(ImageModel model) {
-        //TODO
+    public void editImage(ImageModel img) {
+
+        PreparedStatement stmt = null;
+
+        try {
+
+            prepareConnectionForStatement(false, Connection.TRANSACTION_SERIALIZABLE);
+
+            stmt = prepareStatementForCommit(
+                    PREPARED.IMAGES_UPDATE,
+                    new StatementParam<>(img.getId(), Integer.class),
+                    new StatementParam<>(img.getPath(), String.class),
+                    new StatementParam<>(img.getTitle(), String.class),
+                    new StatementParam<>(img.getWidth(), Integer.class),
+                    new StatementParam<>(img.getHeight(), Integer.class),
+                    new StatementParam<>(img.getOrientation(), Integer.class),
+                    new StatementParam<>(img.getIso(), Integer.class),
+                    new StatementParam<>(img.getPhotographerID(), Integer.class),
+                    new StatementParam<>(img.getModifyDate(), Date.class),
+                    new StatementParam<>(img.getAperture(), String.class),
+                    new StatementParam<>(img.getModel(), String.class),
+                    new StatementParam<>(img.getFocalLength(), String.class),
+                    new StatementParam<>(img.getExposure(), String.class),
+                    new StatementParam<>(img.getKeywords(), String.class)
+            );
+
+            stmt.executeUpdate();
+
+            commitStatement(true);
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
+        }
+        finally {
+
+            closeStatement(stmt);
+        }
     }
 
     @Override
     public void deleteImage(int id) {
-        //TODO
+
+        PreparedStatement stmt = null;
+
+        try {
+
+            prepareConnectionForStatement(false, Connection.TRANSACTION_SERIALIZABLE);
+
+            stmt = prepareStatementForCommit(
+                    PREPARED.IMAGES_DELETE,
+                    new StatementParam(id, Integer.class)
+            );
+
+            stmt.executeUpdate();
+
+            commitStatement(true);
+
+        } catch (SQLException ex) {
+
+            handleExeption(ex);
+        }
+        finally {
+
+            closeStatement(stmt);
+        }
     }
 
     @Override
     public void clearImages() {
-        //TODO
+        getAllImages().parallelStream()
+                .forEach(img -> deleteImage(img.getId()));
     }
 }

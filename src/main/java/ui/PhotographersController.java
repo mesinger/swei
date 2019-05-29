@@ -50,13 +50,11 @@ public class PhotographersController implements Initializable {
         // When a new photographer is added, a new model and presentation model are created and bound to the fields
         addPhotographerButton.setOnAction(actionEvent -> {
             model = new PhotographerModel();
-            model.setDal(dal);
             presModel = new PhotographerPresentationModel(model);
             Binding.applyBinding(photographerData, presModel);
         });
 
         // Initialize empty model and binding once
-        model.setDal(dal);
         Binding.applyBinding(photographerData, presModel);
 
         // Items display the full name of their photographer model
