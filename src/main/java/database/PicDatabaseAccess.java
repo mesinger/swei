@@ -229,62 +229,6 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
     }
 
     @Override
-    public List<ImageModel> getByKeyword(String keyword) {
-        return getAllImages().parallelStream()
-                .filter(img -> img.getKeywords().contains(keyword))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ImageModel> getByTitle(String title) {
-        return getAllImages().parallelStream()
-                .filter(img -> img.getTitle().equals(title))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ImageModel> getByPhotographer(int photographerID) {
-        return getAllImages().parallelStream()
-                .filter(img -> img.getPhotographerID() == photographerID)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ImageModel> getByIso(String iso) {
-        return getAllImages().parallelStream()
-                .filter(img -> Integer.toString(img.getIso()).equals(iso))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ImageModel> getByAperture(String aperture) {
-        return getAllImages().parallelStream()
-                .filter(img -> img.getAperture().equals(aperture))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ImageModel> getByModel(String model) {
-        return getAllImages().parallelStream()
-                .filter(img -> img.getModel().equals(model))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ImageModel> getByFocalLength(String focalLength) {
-        return getAllImages().parallelStream()
-                .filter(img -> img.getFocalLength().equals(focalLength))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ImageModel> getByExposure(String exposure) {
-        return getAllImages().parallelStream()
-                .filter(img -> img.getExposure().equals(exposure))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void addImage(ImageModel img) {
 
         PreparedStatement stmt = null;
@@ -399,11 +343,5 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
             closeStatement(stmt);
         }
-    }
-
-    @Override
-    public void clearImages() {
-        getAllImages().parallelStream()
-                .forEach(img -> deleteImage(img.getId()));
     }
 }

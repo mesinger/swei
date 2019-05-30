@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * mostly utility functions used for communicating with
  * different databases
  */
-abstract class IDatabaseAccess implements IDatabaseConnection{
+public abstract class IDatabaseAccess implements IDatabaseConnection{
 
     //connection instance
     protected Connection conn;
