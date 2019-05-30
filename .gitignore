@@ -1,5 +1,7 @@
 #custom
 *.jpg
+*.png
+*.jpeg
 img/
 sqlite3.exe
 target/
