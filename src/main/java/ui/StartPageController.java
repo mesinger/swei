@@ -77,6 +77,8 @@ public class StartPageController implements Initializable {
                     exposure_time.setText("Exposure time: " + image.getExposure());
                     focal_length.setText("Focal length: " + image.getFocalLength());
                     aperture.setText("Aperture: " + image.getAperture());
+
+                    // TODO: Bindings for IPTC like in photographer controller
                 }
             });
 

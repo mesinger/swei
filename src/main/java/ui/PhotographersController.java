@@ -44,7 +44,14 @@ public class PhotographersController implements Initializable {
         // When save button is clicked, the data is saved to the list and it is reloaded
         saveButton.setOnAction(actionEvent -> {
             presModel.saveDataToModel();
+            if (model.getId() == 0) {
+                dal.addPhotographer(model);
+            } else {
+                dal.editPhotographer(model);
+            }
             reloadList();
+            model = new PhotographerModel();
+            presModel = new PhotographerPresentationModel(model);
         });
 
         // When a new photographer is added, a new model and presentation model are created and bound to the fields

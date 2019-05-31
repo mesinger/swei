@@ -42,6 +42,9 @@ public class PhotographerPresentationModel {
         fullName = new StringBinding() {
             @Override
             protected String computeValue() {
+                if (getFirstName() == null && getSurName() == null) {
+                    return "";
+                }
                 return String.format("%s %s", getFirstName(), getSurName().trim());
             }
         };
@@ -51,10 +54,17 @@ public class PhotographerPresentationModel {
         firstName.setValue(model.getFirstName());
         surName.setValue(model.getSurName());
         notes.setValue(model.getNotes());
-        birthDate.setValue(model.getBirthDate().toLocalDate());
+        if (model.getBirthDate() != null) {
+            birthDate.setValue(model.getBirthDate().toLocalDate());
+        }
     }
 
     public void saveDataToModel() {
+        if (!isValid()) {
+            // TODO: Error handling
+            return;
+        }
+
         model.setFirstName(firstName.getValue());
         model.setSurName(surName.getValue());
         model.setNotes(notes.getValue());
