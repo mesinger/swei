@@ -34,6 +34,13 @@ public class PicDbBusinessLayer implements IPhotographerBL, IImageBL {
     }
 
     @Override
+    public List<ImageModel> getByPath(String path) {
+        return getAllImages().parallelStream()
+                .filter(img -> img.getPath().equals(Objects.requireNonNullElse(path, "")))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ImageModel> getByPhotographer(int photographerID) {
 
         if(photographerID < 0) return List.of();

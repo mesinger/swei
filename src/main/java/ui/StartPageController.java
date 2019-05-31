@@ -69,7 +69,6 @@ public class StartPageController implements Initializable {
 
             db.setup();
 
-            // TODO: This shouldn't be done on initialize, but only when the images need to be synced with the database
             // Get all images in folder
             List<String> imagePaths = new ArrayList<String>();
             File[] files = new File("img/").listFiles();
@@ -86,7 +85,11 @@ public class StartPageController implements Initializable {
 
             for (String image : imagePaths) {
                 ImageModel data = dataExtractor.extractExifAndIPTC(image);
-                db.addImage(data);
+
+                // Add image if it's not already in the database
+                if (bl.getByPath(data.getPath()).isEmpty()) {
+                    db.addImage(data);
+                }
             }
 
             for (ImageModel image : bl.getAllImages()) {

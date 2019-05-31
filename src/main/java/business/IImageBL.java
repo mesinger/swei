@@ -10,6 +10,7 @@ public interface IImageBL extends BusinessLayer {
     List<ImageModel> getAllImages();
     List<ImageModel> getByKeyword(String keyword);
     List<ImageModel> getByTitle(String title);
+    List<ImageModel> getByPath(String path);
     List<ImageModel> getByPhotographer(int photographerID);
     List<ImageModel> getByIso(String iso);
     List<ImageModel> getByAperture(String aperture);
