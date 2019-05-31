@@ -1,8 +1,6 @@
 package presentationModels;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import models.ImageModel;
 import models.PhotographerModel;
 
@@ -13,8 +11,8 @@ public class ImagePresentationModel {
 
     public void loadDataFromModel() {
         path.setValue(model.getPath());
-        width.setValue(model.getWidth());
-        height.setValue(model.getHeight());
+        width.setValue(String.valueOf(model.getWidth()));
+        height.setValue(String.valueOf(model.getHeight()));
         orientation.setValue(model.getOrientation().toString());
         iso.setValue(String.valueOf(model.getIso()));
         modifyDate.setValue(model.getModifyDate().toString());
@@ -24,13 +22,13 @@ public class ImagePresentationModel {
         focalLength.setValue(model.getFocalLength());
         exposure.setValue(model.getExposure());
         title.setValue(model.getTitle());
-        photographerID.setValue(model.getPhotographerID());
+        photographerID.setValue(String.valueOf(model.getPhotographerID()));
     }
 
     public void saveDataToModel() {
         model.setKeywords(getKeywords());
         model.setTitle(getTitle());
-        model.setPhotographerID(getPhotographerID());
+        model.setPhotographerID(Integer.valueOf(getPhotographerID()));
     }
 
     public String getPath() {
@@ -45,27 +43,27 @@ public class ImagePresentationModel {
         this.path.set(path);
     }
 
-    public int getWidth() {
+    public String getWidth() {
         return width.get();
     }
 
-    public IntegerProperty widthProperty() {
+    public StringProperty widthProperty() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(String width) {
         this.width.set(width);
     }
 
-    public int getHeight() {
+    public String getHeight() {
         return height.get();
     }
 
-    public IntegerProperty heightProperty() {
+    public StringProperty heightProperty() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         this.height.set(height);
     }
 
@@ -177,32 +175,31 @@ public class ImagePresentationModel {
         this.title.set(title);
     }
 
-    public int getPhotographerID() {
+    public String getPhotographerID() {
         return photographerID.get();
     }
 
-    public IntegerProperty photographerIDProperty() {
+    public StringProperty photographerIDProperty() {
         return photographerID;
     }
 
-    public void setPhotographerID(int photographerID) {
+    public void setPhotographerID(String photographerID) {
         this.photographerID.set(photographerID);
     }
 
     private ImageModel model;
     private PhotographerModel photographerModel;
-
-    protected StringProperty path;
-    protected IntegerProperty width;
-    protected IntegerProperty height;
-    protected StringProperty orientation;
-    protected StringProperty iso;
-    protected StringProperty modifyDate;
-    protected StringProperty keywords;
-    protected StringProperty aperture;
-    protected StringProperty cameraModel;
-    protected StringProperty focalLength;
-    protected StringProperty exposure;
-    protected StringProperty title;
-    protected IntegerProperty photographerID;
+    protected StringProperty path = new SimpleStringProperty();
+    protected StringProperty width = new SimpleStringProperty();
+    protected StringProperty height = new SimpleStringProperty();
+    protected StringProperty orientation = new SimpleStringProperty();
+    protected StringProperty iso = new SimpleStringProperty();
+    protected StringProperty modifyDate = new SimpleStringProperty();
+    protected StringProperty keywords = new SimpleStringProperty();
+    protected StringProperty aperture = new SimpleStringProperty();
+    protected StringProperty cameraModel = new SimpleStringProperty();
+    protected StringProperty focalLength = new SimpleStringProperty();
+    protected StringProperty exposure = new SimpleStringProperty();
+    protected StringProperty title = new SimpleStringProperty();
+    protected StringProperty photographerID = new SimpleStringProperty();
 }

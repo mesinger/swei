@@ -77,7 +77,7 @@
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
                                                             prefWidth="200.0">
                                                     <children>
-                                                        <GridPane fx:id="photographerData" AnchorPane.bottomAnchor="0.0"
+                                                        <GridPane fx:id="imageData" AnchorPane.bottomAnchor="0.0"
                                                                   AnchorPane.leftAnchor="0.0"
                                                                   AnchorPane.rightAnchor="0.0"
                                                                   AnchorPane.topAnchor="0.0">
@@ -105,17 +105,9 @@
                                                                    GridPane.rowIndex="2">
                                                             </Label>
                                                             <TextField fx:id="photographer"
-                                                                       Binding.twoWay="{text=photographer}"
+                                                                       Binding.twoWay="{text=photographerID}"
                                                                        prefHeight="40" GridPane.columnIndex="1"
                                                                        GridPane.rowIndex="2"/>
-
-                                                            <Label text="Created: " GridPane.columnIndex="0"
-                                                                   GridPane.rowIndex="3">
-                                                            </Label>
-                                                            <DatePicker fx:id="created"
-                                                                        Binding.twoWay="{value=created}"
-                                                                        prefHeight="40" GridPane.columnIndex="1"
-                                                                        GridPane.rowIndex="3"/>
 
                                                             <Label text="Keywords: " GridPane.columnIndex="0"
                                                                    GridPane.rowIndex="4">

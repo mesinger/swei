@@ -1,6 +1,9 @@
 package ui;
 
+import database.IImageDAL;
 import database.PicDatabaseAccess;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import models.ImageModel;
 import image.JPEGImageDataExtractor;
 import javafx.event.ActionEvent;
@@ -15,6 +18,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import presentationModels.ImagePresentationModel;
+import util.Binding;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +37,14 @@ public class StartPageController implements Initializable {
     public Label focal_length;
     public Label exposure_program;
     public MenuItem photographer_edit;
+    public GridPane imageData;
+    public Button iptcSave;
     @FXML
     private Imagescroll imgscroll;
+
+    private ImageModel model;
+    private ImagePresentationModel pres;
+    private IImageDAL dal = new PicDatabaseAccess();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,16 +82,26 @@ public class StartPageController implements Initializable {
             imgscroll.addEventHandler(ImageClickedEvent.IMAGE_CLICKED_EVENT_TYPE, new ImageClickedEventHandler() {
                 @Override
                 public void onClicked(ImageModel image) {
+                    model = image;
+                    pres = new ImagePresentationModel(model);
+                    pres.loadDataFromModel();
+
+                    Binding.applyBinding(imageData, pres);
+
                     imageView.setImage(new Image("file:///" + image.getPath())); // TODO: Move this 'file:///'
                     camname.setText("Camera model: " + image.getModel());
                     iso.setText("ISO: " + image.getIso());
                     exposure_time.setText("Exposure time: " + image.getExposure());
                     focal_length.setText("Focal length: " + image.getFocalLength());
                     aperture.setText("Aperture: " + image.getAperture());
-
-                    // TODO: Bindings for IPTC like in photographer controller
                 }
             });
+
+            iptcSave.setOnAction(actionEvent -> {
+                pres.saveDataToModel();
+                dal.editImage(model);
+            });
+
 
             // Open photographer editing menu
             photographer_edit.setOnAction(new EventHandler<ActionEvent>() {
