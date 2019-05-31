@@ -54,7 +54,7 @@
                         </Label>
                     </children>
                 </StackPane>
-                <TextField focusTraversable="false" promptText="Search"/>
+                <TextField fx:id="search" focusTraversable="false" promptText="Search"/>
                 <SplitPane dividerPositions="0.7" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0"
                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
                            VBox.vgrow="ALWAYS">

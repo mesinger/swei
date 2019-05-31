@@ -5,7 +5,7 @@ import models.PhotographerModel;
 import java.util.List;
 import java.util.Optional;
 
-public interface IPhotographerBL {
+public interface IPhotographerBL extends BusinessLayer {
 
     List<PhotographerModel> getAllPhotographers();
     void addPhotographer(PhotographerModel photographer);

@@ -49,6 +49,10 @@ public abstract class ImageModel {
         this.exposure = exposure;
     }
 
+    public int getOrientationInt() {
+        return orientation.getType();
+    }
+
     public void setOrientation(int orientation){
         this.orientation = new Orientation(orientation);
     }

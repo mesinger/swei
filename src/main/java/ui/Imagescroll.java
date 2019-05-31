@@ -47,6 +47,10 @@ public class Imagescroll extends ScrollPane implements Initializable {
         }
     }
 
+    public void clear() {
+        visibleNodes.clear();
+    }
+
     public void addPlaceholderBox(ImageModel image) {
         AnchorPane anchorPane = new ProxyAnchorPane(image);
 

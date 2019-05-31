@@ -5,7 +5,7 @@ import models.ImageModel;
 import java.util.List;
 import java.util.Optional;
 
-public interface IImageBL {
+public interface IImageBL extends BusinessLayer {
 
     List<ImageModel> getAllImages();
     List<ImageModel> getByKeyword(String keyword);

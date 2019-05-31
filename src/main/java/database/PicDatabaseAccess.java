@@ -239,12 +239,11 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
             stmt = prepareStatementForCommit(
                     PREPARED.IMAGES_INSERT,
-                    new StatementParam<>(img.getId(), Integer.class),
                     new StatementParam<>(img.getPath(), String.class),
                     new StatementParam<>(img.getTitle(), String.class),
                     new StatementParam<>(img.getWidth(), Integer.class),
                     new StatementParam<>(img.getHeight(), Integer.class),
-                    new StatementParam<>(img.getOrientation(), Integer.class),
+                    new StatementParam<>(img.getOrientationInt(), Integer.class),
                     new StatementParam<>(img.getIso(), Integer.class),
                     new StatementParam<>(img.getPhotographerID(), Integer.class),
                     new StatementParam<>(img.getModifyDate(), Date.class),

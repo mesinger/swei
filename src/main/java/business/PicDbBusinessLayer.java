@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class PicDbBusinessLayer implements BusinessLayer, IPhotographerBL, IImageBL {
+public class PicDbBusinessLayer implements IPhotographerBL, IImageBL {
 
     private PicDatabaseAccess dal = null;
 

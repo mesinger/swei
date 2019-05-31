@@ -1,8 +1,12 @@
 package ui;
 
+import business.IImageBL;
+import business.PicDbBusinessLayer;
+import database.IDatabaseAccess;
 import database.IImageDAL;
 import database.PicDatabaseAccess;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import models.ImageModel;
 import image.JPEGImageDataExtractor;
@@ -25,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -39,15 +44,23 @@ public class StartPageController implements Initializable {
     public MenuItem photographer_edit;
     public GridPane imageData;
     public Button iptcSave;
+    public TextField search;
     @FXML
     private Imagescroll imgscroll;
 
     private ImageModel model;
     private ImagePresentationModel pres;
+
+    // TODO: We shouldn't need both of these
     private IImageDAL dal = new PicDatabaseAccess();
+    private IDatabaseAccess dbaccess = new PicDatabaseAccess();
+
+    private IImageBL bl = new PicDbBusinessLayer();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        bl.setDAL(dbaccess);
+
         PicDatabaseAccess db = new PicDatabaseAccess();
 
         if (db.open()) {
@@ -78,26 +91,52 @@ public class StartPageController implements Initializable {
                 imgscroll.addPlaceholderBox(data);
             }
 
+            search.setOnAction(
+                    e -> {
+                        // Enter was pressed in the search field, load only the correct images
+                        imgscroll.clear();
+
+                        List<ImageModel> newImages = new LinkedList<>();
+
+                        for (String keyword : search.getText().split(" ")) {
+                            List<ImageModel> imagesThisKeyword = bl.getByKeyword(keyword);
+
+                            for (ImageModel image : imagesThisKeyword) {
+                                if (!newImages.contains(image)) {
+                                    newImages.add(image);
+                                }
+                            }
+                        }
+
+                        for (ImageModel image : newImages) {
+                            imgscroll.addPlaceholderBox(image);
+                        }
+                    });
+
             // Add event handler for when an image is clicked
-            imgscroll.addEventHandler(ImageClickedEvent.IMAGE_CLICKED_EVENT_TYPE, new ImageClickedEventHandler() {
-                @Override
-                public void onClicked(ImageModel image) {
-                    model = image;
-                    pres = new ImagePresentationModel(model);
-                    pres.loadDataFromModel();
+            imgscroll.addEventHandler(ImageClickedEvent.IMAGE_CLICKED_EVENT_TYPE, new
 
-                    Binding.applyBinding(imageData, pres);
+                    ImageClickedEventHandler() {
+                        @Override
+                        public void onClicked(ImageModel image) {
+                            model = image;
+                            pres = new ImagePresentationModel(model);
+                            pres.loadDataFromModel();
 
-                    imageView.setImage(new Image("file:///" + image.getPath())); // TODO: Move this 'file:///'
-                    camname.setText("Camera model: " + image.getModel());
-                    iso.setText("ISO: " + image.getIso());
-                    exposure_time.setText("Exposure time: " + image.getExposure());
-                    focal_length.setText("Focal length: " + image.getFocalLength());
-                    aperture.setText("Aperture: " + image.getAperture());
-                }
-            });
+                            Binding.applyBinding(imageData, pres);
 
-            iptcSave.setOnAction(actionEvent -> {
+                            imageView.setImage(new Image("file:///" + image.getPath())); // TODO: Move this 'file:///'
+                            camname.setText("Camera model: " + image.getModel());
+                            iso.setText("ISO: " + image.getIso());
+                            exposure_time.setText("Exposure time: " + image.getExposure());
+                            focal_length.setText("Focal length: " + image.getFocalLength());
+                            aperture.setText("Aperture: " + image.getAperture());
+                        }
+                    });
+
+            iptcSave.setOnAction(actionEvent ->
+
+            {
                 pres.saveDataToModel();
                 dal.editImage(model);
             });
@@ -113,8 +152,7 @@ public class StartPageController implements Initializable {
                         stage.setTitle("Photographers");
                         stage.setScene(new Scene(root, 600, 600));
                         stage.show();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }

@@ -22,7 +22,6 @@ public abstract class IDatabaseAccess implements IDatabaseConnection{
      */
     protected void closeStatement(PreparedStatement stmt) {
         try{
-
             conn.setAutoCommit(true);
 
             if(stmt != null)
