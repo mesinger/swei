@@ -59,6 +59,7 @@ public class StartPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        dbaccess.open();
         bl.setDAL(dbaccess);
 
         PicDatabaseAccess db = new PicDatabaseAccess();
@@ -86,9 +87,10 @@ public class StartPageController implements Initializable {
             for (String image : imagePaths) {
                 ImageModel data = dataExtractor.extractExifAndIPTC(image);
                 db.addImage(data);
+            }
 
-                // TODO: Don't use the data directly from the image file, get it from the database!
-                imgscroll.addPlaceholderBox(data);
+            for (ImageModel image : bl.getAllImages()) {
+                imgscroll.addPlaceholderBox(image);
             }
 
             search.setOnAction(
@@ -98,12 +100,18 @@ public class StartPageController implements Initializable {
 
                         List<ImageModel> newImages = new LinkedList<>();
 
-                        for (String keyword : search.getText().split(" ")) {
-                            List<ImageModel> imagesThisKeyword = bl.getByKeyword(keyword);
+                        // If the text is empty, get all images
+                        if (search.getText().isEmpty()) {
+                            newImages = bl.getAllImages();
+                        } else {
+                            for (String keyword : search.getText().split(" ")) {
+                                List<ImageModel> imagesThisKeyword = bl.getByKeyword(keyword);
+                                List<ImageModel> all = bl.getAllImages();
 
-                            for (ImageModel image : imagesThisKeyword) {
-                                if (!newImages.contains(image)) {
-                                    newImages.add(image);
+                                for (ImageModel image : imagesThisKeyword) {
+                                    if (!newImages.contains(image)) {
+                                        newImages.add(image);
+                                    }
                                 }
                             }
                         }
@@ -134,9 +142,7 @@ public class StartPageController implements Initializable {
                         }
                     });
 
-            iptcSave.setOnAction(actionEvent ->
-
-            {
+            iptcSave.setOnAction(actionEvent -> {
                 pres.saveDataToModel();
                 dal.editImage(model);
             });

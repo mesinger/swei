@@ -22,7 +22,7 @@ public class PicDbBusinessLayer implements IPhotographerBL, IImageBL {
     @Override
     public List<ImageModel> getByKeyword(String keyword) {
         return getAllImages().parallelStream()
-                .filter(img -> img.getKeywords().contains(Objects.requireNonNullElse(keyword, "")))
+                .filter(img -> Objects.requireNonNullElse(img.getKeywords(), "").contains(Objects.requireNonNullElse(keyword, "")))
                 .collect(Collectors.toList());
     }
 

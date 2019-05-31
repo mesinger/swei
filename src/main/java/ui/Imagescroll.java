@@ -48,7 +48,7 @@ public class Imagescroll extends ScrollPane implements Initializable {
     }
 
     public void clear() {
-        visibleNodes.clear();
+        imageBox.getChildren().clear();
     }
 
     public void addPlaceholderBox(ImageModel image) {
@@ -64,6 +64,8 @@ public class Imagescroll extends ScrollPane implements Initializable {
         });
 
         imageBox.getChildren().add(anchorPane);
+
+        checkVisible();
     }
 
     private void addImage(Image img, Pane pane) {
