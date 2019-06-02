@@ -109,7 +109,19 @@ public class StartPageController implements Initializable {
                         } else {
                             for (String keyword : search.getText().split(" ")) {
                                 List<ImageModel> imagesThisKeyword = bl.getByKeyword(keyword);
-                                List<ImageModel> all = bl.getAllImages();
+
+                                if (keyword.contains(":")) {
+                                    // This is a special keyword (e.g. iso)
+                                    String[] keyValue = keyword.split(":");
+
+                                    if (keyValue[0].equals("iso")) {
+                                        imagesThisKeyword = bl.getByIso(keyValue[1]);
+                                    } else if (keyValue[0].equals("photographer")) {
+                                        imagesThisKeyword = bl.getByPhotographer(Integer.valueOf(keyValue[1]));
+                                    } else if (keyValue[0].equals("title")) {
+                                        imagesThisKeyword = bl.getByTitle(keyValue[1]);
+                                    }
+                                }
 
                                 for (ImageModel image : imagesThisKeyword) {
                                     if (!newImages.contains(image)) {
