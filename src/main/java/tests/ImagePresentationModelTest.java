@@ -1,8 +1,9 @@
-package presentationModels;
+package tests;
 
 import image.JPEGImageData;
 import models.ImageModel;
 import org.junit.jupiter.api.Test;
+import presentationModels.ImagePresentationModel;
 
 import static org.junit.jupiter.api.Assertions.*;
 

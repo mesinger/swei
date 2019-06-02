@@ -1,7 +1,8 @@
-package presentationModels;
+package tests;
 
 import models.PhotographerModel;
 import org.junit.jupiter.api.Test;
+import presentationModels.PhotographerPresentationModel;
 
 import java.sql.Date;
 import java.util.Calendar;
