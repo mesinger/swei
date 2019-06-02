@@ -61,8 +61,7 @@ public class PhotographerPresentationModel {
 
     public void saveDataToModel() {
         if (!isValid()) {
-            // TODO: Error handling
-            return;
+            throw new IllegalStateException("Can only save to model if the presentation model is valid!");
         }
 
         model.setFirstName(firstName.getValue());
@@ -124,6 +123,6 @@ public class PhotographerPresentationModel {
 
     public boolean isValid() {
         return (getSurName() != null && !getSurName().isEmpty() && getBirthDate() != null &&
-                getBirthDate().isBefore(LocalDate.now()));
+                !getBirthDate().isAfter(LocalDate.now()));
     }
 }

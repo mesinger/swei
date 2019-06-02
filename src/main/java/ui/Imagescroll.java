@@ -70,7 +70,6 @@ public class Imagescroll extends ScrollPane implements Initializable {
 
     private void addImage(Image img, Pane pane) {
         ImageView imageView = new ImageView(img);
-        imageView.fitHeightProperty().bind(imageBox.heightProperty());
         imageView.setPreserveRatio(true);
 
         // TODO: This ignores the bottom scrollbar -> images are slightly too high, vertical scrollbar appears
