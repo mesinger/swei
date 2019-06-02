@@ -22,8 +22,6 @@ public class PhotographerModel {
         this.id = id;
     }
 
-    // For debugging
-    // TODO: remove this for final version
     public String toString() {
         return "Name: " + firstName + " " + surName +
                 "\nBirthdate: " + birthDate.toString() +

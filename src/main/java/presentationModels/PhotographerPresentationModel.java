@@ -50,6 +50,9 @@ public class PhotographerPresentationModel {
         };
     }
 
+    /**
+     * Sets all variables to the values in the model which was passed in the constructor
+     */
     public void loadDataFromModel() {
         firstName.setValue(model.getFirstName());
         surName.setValue(model.getSurName());
@@ -59,6 +62,9 @@ public class PhotographerPresentationModel {
         }
     }
 
+    /**
+     * Saves the modifiable values back to the model which was passed at the beginning
+     */
     public void saveDataToModel() {
         if (!isValid()) {
             throw new IllegalStateException("Can only save to model if the presentation model is valid!");
@@ -121,6 +127,9 @@ public class PhotographerPresentationModel {
         this.birthDate.set(birthDate);
     }
 
+    /**
+     * @return True if the surname and the birth date have been set, and the birth date is not after today.
+     */
     public boolean isValid() {
         return (getSurName() != null && !getSurName().isEmpty() && getBirthDate() != null &&
                 !getBirthDate().isAfter(LocalDate.now()));

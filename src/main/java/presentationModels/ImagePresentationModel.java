@@ -11,6 +11,9 @@ public class ImagePresentationModel {
         this.model = model;
     }
 
+    /**
+     * Sets all variables to the values in the model which was passed in the constructor
+     */
     public void loadDataFromModel() {
         path.setValue(model.getPath());
         width.setValue(String.valueOf(model.getWidth()));
@@ -27,6 +30,9 @@ public class ImagePresentationModel {
         photographerID.setValue(String.valueOf(model.getPhotographerID()));
     }
 
+    /**
+     * Saves the modifiable values back to the model which was passed at the beginning
+     */
     public void saveDataToModel() {
         model.setKeywords(getKeywords());
         model.setTitle(getTitle());

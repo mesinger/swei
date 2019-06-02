@@ -13,15 +13,16 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 
-/*
-abstract class for extracting
-exif and iptc data from images
+/**
+ * abstract class for extracting
+ * exif and iptc data from images
  */
 public class JPEGImageDataExtractor implements IImageDataExtractor{
 
-    /*
-    extracts image data from jpeg in given path
-    and returns data as JPEGImageData
+
+    /**
+     * extracts image data from jpeg in given path
+     * and returns data as JPEGImageData
      */
     public JPEGImageData extractExifAndIPTC(String path){
 

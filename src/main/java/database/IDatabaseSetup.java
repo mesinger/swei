@@ -5,5 +5,8 @@ package database;
  */
 interface IDatabaseSetup {
 
+    /**
+     * Create the database and set up the required tables
+     */
     void setup();
 }

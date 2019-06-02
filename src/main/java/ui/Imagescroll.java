@@ -47,10 +47,19 @@ public class Imagescroll extends ScrollPane implements Initializable {
         }
     }
 
+    /**
+     * Removes all images from the imagebox
+     */
     public void clear() {
         imageBox.getChildren().clear();
     }
 
+    /**
+     * Adds a placeholder (proxy) for the given image - the image is not loaded immediately, but only
+     * once it is visible on the screen
+     *
+     * @param image The image which should be displayed once the box is visible
+     */
     public void addPlaceholderBox(ImageModel image) {
         AnchorPane anchorPane = new ProxyAnchorPane(image);
 
@@ -68,6 +77,12 @@ public class Imagescroll extends ScrollPane implements Initializable {
         checkVisible();
     }
 
+    /**
+     * Adds an image to the pane, binding the height of it to the height of this node.
+     * This actually loads the image itself instead of a placeholder.
+     * @param img The image to add
+     * @param pane The pane to add the image to
+     */
     private void addImage(Image img, Pane pane) {
         ImageView imageView = new ImageView(img);
         imageView.setPreserveRatio(true);
@@ -78,10 +93,16 @@ public class Imagescroll extends ScrollPane implements Initializable {
         pane.getChildren().add(imageView);
     }
 
+    /**
+     * Updates the currently visible nodes (saved in visibleNodes)
+     */
     private void checkVisible() {
         visibleNodes.setAll(getVisibleNodes());
     }
 
+    /**
+     * @return All currently visible nodes
+     */
     private List<Node> getVisibleNodes() {
         List<Node> visibleNodes = new ArrayList<>();
         Bounds paneBounds = localToScene(getBoundsInParent());
@@ -123,17 +144,21 @@ public class Imagescroll extends ScrollPane implements Initializable {
 
     //zazcek hotfix for scrollview
     private boolean isInitialized = false;
+
     @Override
     public void requestLayout() {
         super.requestLayout();
 
-        if(!isInitialized){
+        if (!isInitialized) {
             isInitialized = true;
             checkVisible();
         }
     }
 }
 
+/**
+ * The event which is fired when an image is clicked on
+ */
 class ImageClickedEvent extends Event {
 
     private ImageModel image;
