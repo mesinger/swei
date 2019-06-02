@@ -4,6 +4,8 @@ import javafx.beans.property.*;
 import models.ImageModel;
 import models.PhotographerModel;
 
+import java.util.Objects;
+
 public class ImagePresentationModel {
     public ImagePresentationModel(ImageModel model) {
         this.model = model;
@@ -13,9 +15,9 @@ public class ImagePresentationModel {
         path.setValue(model.getPath());
         width.setValue(String.valueOf(model.getWidth()));
         height.setValue(String.valueOf(model.getHeight()));
-        orientation.setValue(model.getOrientation().toString());
+        orientation.setValue(Objects.requireNonNullElse(model.getOrientation(), "").toString());
         iso.setValue(String.valueOf(model.getIso()));
-        modifyDate.setValue(model.getModifyDate().toString());
+        modifyDate.setValue(Objects.requireNonNullElse(model.getModifyDate(), "").toString());
         keywords.setValue(model.getKeywords());
         aperture.setValue(model.getAperture());
         cameraModel.setValue(model.getModel());
