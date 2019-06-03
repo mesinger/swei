@@ -26,12 +26,11 @@ import presentationModels.ImagePresentationModel;
 import util.Binding;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class StartPageController implements Initializable {
     public ImageView imageView;
@@ -45,6 +44,8 @@ public class StartPageController implements Initializable {
     public GridPane imageData;
     public Button iptcSave;
     public TextField search;
+    public MenuItem reportList;
+    public MenuItem reportImage;
     @FXML
     private Imagescroll imgscroll;
 
@@ -57,21 +58,36 @@ public class StartPageController implements Initializable {
 
     private IImageBL bl = new PicDbBusinessLayer();
 
+    private FileInputStream propertiesFile;
+    private Properties properties = new Properties();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            propertiesFile = new FileInputStream(new File("config.txt"));
+            properties.load(propertiesFile);
+        } catch (FileNotFoundException e) {
+            System.out.println("Configuration file not found!");
+        } catch (IOException e) {
+            System.out.println("Invalid configuration file, check the syntax!");
+        }
+
         dbaccess.open();
         bl.setDAL(dbaccess);
 
         PicDatabaseAccess db = new PicDatabaseAccess();
 
-        if (db.open()) {
+        if (db.open() && properties != null) {
             System.out.println("connected to db");
 
             db.setup();
 
             // Get all images in folder
             List<String> imagePaths = new ArrayList<String>();
-            File[] files = new File("img/").listFiles();
+
+            System.out.println("Loading files from " + properties.getProperty("IMG_DIR"));
+
+            File[] files = new File(properties.getProperty("IMG_DIR")).listFiles();
 
             for (File file : files) {
                 if (file.isFile() && (file.getName().toLowerCase().endsWith("jpg") ||

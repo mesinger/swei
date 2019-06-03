@@ -1,0 +1,3 @@
+IMG_DIR=/home/karl/Data/Technikum/SEM4/SWEI/swei/img
+IMAGE_DAL=1
+PHOTOGRAPHER_DAL=2

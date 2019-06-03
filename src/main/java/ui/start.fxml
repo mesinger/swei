@@ -40,9 +40,12 @@
                                         <MenuItem fx:id="photographer_edit" mnemonicParsing="false" text="Edit"/>
                                     </items>
                                 </Menu>
-                                <Menu mnemonicParsing="false" text="Help">
+                                <Menu mnemonicParsing="false" text="Reporting">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="About"/>
+                                        <MenuItem fx:id="reportList" mnemonicParsing="false"
+                                                  text="Report for current list"/>
+                                        <MenuItem fx:id="reportImage" mnemonicParsing="false"
+                                                  text="Report for selected image"/>
                                     </items>
                                 </Menu>
                             </menus>
