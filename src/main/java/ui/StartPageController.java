@@ -53,7 +53,7 @@ public class StartPageController implements Initializable {
     private ImagePresentationModel pres;
 
     // TODO: We shouldn't need both of these
-    private IImageDAL dal = new PicDatabaseAccess();
+    private PicDatabaseAccess dal = new PicDatabaseAccess();
     private IDatabaseAccess dbaccess = new PicDatabaseAccess();
 
     private IImageBL bl = new PicDbBusinessLayer();
@@ -174,6 +174,11 @@ public class StartPageController implements Initializable {
                     });
 
             iptcSave.setOnAction(actionEvent -> {
+                // TODO: Should be done as part of isValid probably
+                if (!pres.getPhotographerID().equals("0") && dal.getPhotographer(Integer.valueOf(pres.getPhotographerID())) != null) {
+                    // TODO: Error
+                }
+
                 pres.saveDataToModel();
                 dal.editImage(model);
             });

@@ -35,9 +35,9 @@ public class PhotographersController implements Initializable {
         ChangeListener textChangedListener = (observable, oldValue, newValue) ->
                 saveButton.setDisable(!presModel.isValid());
 
-        firstName.textProperty().addListener(textChangedListener);
-        lastName.textProperty().addListener(textChangedListener);
-        dateOfBirth.valueProperty().addListener(textChangedListener);
+        presModel.firstNameProperty().addListener(textChangedListener);
+        presModel.surNameProperty().addListener(textChangedListener);
+        presModel.birthDateProperty().addListener(textChangedListener);
 
         saveButton.setDisable(true);
 
@@ -71,7 +71,7 @@ public class PhotographersController implements Initializable {
                     var presentation = new PhotographerPresentationModel(photographer);
                     presentation.loadDataFromModel();
                     super.updateItem(photographer, empty);
-                    setText(presentation.getFullName());
+                    setText(photographer.getId() + ": " + presentation.getFullName());
                 }
             }
         });
