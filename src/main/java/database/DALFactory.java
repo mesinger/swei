@@ -5,8 +5,7 @@ public class DALFactory {
         if (id == 1) {
             return new PicDatabaseAccess();
         } else {
-            System.out.println("Invalid DAL id!");
-            return null;
+            throw new IllegalArgumentException("Invalid DAL id!");
         }
     }
 
@@ -16,8 +15,7 @@ public class DALFactory {
         } else if (id == 2) {
             return new MockDAL();
         } else {
-            System.out.println("Invalid DAL id!");
-            return null;
+            throw new IllegalArgumentException("Invalid DAL id!");
         }
     }
 }

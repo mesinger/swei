@@ -45,7 +45,12 @@ public class PhotographerDALTests {
 
     @Test
     public void addNewPhotographer () {
+        PhotographerModel max = new PhotographerModel();
+        max.setFirstName("Max");
+        max.setSurName("Mustermann");
+
         List<PhotographerModel> photographers = new ArrayList<>();
+        photographers.add(max);
         MockDAL dal = prepareDAL(photographers);
 
 
