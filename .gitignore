@@ -1,4 +1,6 @@
 #custom
+picdb.db
+config.txt
 *.jpg
 *.png
 *.jpeg
