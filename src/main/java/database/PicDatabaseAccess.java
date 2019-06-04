@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabaseSetup, IPhotographerDAL, IImageDAL {
@@ -163,6 +164,8 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
      */
     @Override
     public void setup() {
+
+        Logger.getGlobal().info("Setting up the database");
 
         PreparedStatement createPhotographer = null;
         PreparedStatement createImages = null;

@@ -5,6 +5,7 @@ import models.ImageModel;
 import models.PhotographerModel;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class ImagePresentationModel {
     public ImagePresentationModel(ImageModel model) {
@@ -34,6 +35,8 @@ public class ImagePresentationModel {
      * Saves the modifiable values back to the model which was passed at the beginning
      */
     public void saveDataToModel() {
+        Logger.getGlobal().info("Saving presentationModel data to model");
+
         model.setKeywords(getKeywords());
         model.setTitle(getTitle());
         model.setPhotographerID(Integer.valueOf(getPhotographerID()));

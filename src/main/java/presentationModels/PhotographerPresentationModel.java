@@ -10,6 +10,7 @@ import models.PhotographerModel;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.sql.Date;
+import java.util.logging.Logger;
 
 public class PhotographerPresentationModel {
     private PhotographerModel model;
@@ -59,6 +60,8 @@ public class PhotographerPresentationModel {
         notes.setValue(model.getNotes());
         if (model.getBirthDate() != null) {
             birthDate.setValue(model.getBirthDate().toLocalDate());
+        } else {
+            Logger.getGlobal().warning("Birth date was null - why does this photographer exist?");
         }
     }
 
@@ -66,6 +69,8 @@ public class PhotographerPresentationModel {
      * Saves the modifiable values back to the model which was passed at the beginning
      */
     public void saveDataToModel() {
+        Logger.getGlobal().info("Saving presentationModel data to model");
+
         if (!isValid()) {
             throw new IllegalStateException("Can only save to model if the presentation model is valid!");
         }

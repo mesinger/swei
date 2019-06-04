@@ -15,15 +15,8 @@ import java.sql.Date;
 
 public class Main extends Application {
 
-    private static final Logger logger = LogManager.getLogger(Main.class);
-    BasicConfigurator basicConfigurator;
-
-
     @Override
     public void start(Stage primaryStage) throws Exception{
-        basicConfigurator.configure();
-        logger.debug("Entering picdb ...");
-
         Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
         primaryStage.setTitle("SWEI");
         primaryStage.setScene(new Scene(root, 800, 600));

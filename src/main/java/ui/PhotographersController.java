@@ -13,6 +13,7 @@ import util.Binding;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class PhotographersController extends IController implements Initializable {
     public GridPane photographerData;
@@ -29,6 +30,8 @@ public class PhotographersController extends IController implements Initializabl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        Logger.getGlobal().info("Initializing PhotographersController");
 
         initializeDatabaseConnection();
 
@@ -62,6 +65,9 @@ public class PhotographersController extends IController implements Initializabl
         addPhotographerButton.setOnAction(actionEvent -> {
             model = new PhotographerModel();
             presModel = new PhotographerPresentationModel(model);
+            presModel.firstNameProperty().addListener(textChangedListener);
+            presModel.surNameProperty().addListener(textChangedListener);
+            presModel.birthDateProperty().addListener(textChangedListener);
             Binding.applyBinding(photographerData, presModel);
         });
 
@@ -97,6 +103,8 @@ public class PhotographersController extends IController implements Initializabl
 
     // Get all photographers from the DAL and insert them into the photographer list
     private void reloadList() {
+        Logger.getGlobal().info("Reloading photographers list");
+
         List<PhotographerModel> photographers = bl.getAllPhotographers();
         photographerList.getItems().clear();
 
