@@ -29,6 +29,7 @@ public class PicDbBusinessLayer implements IPicDbBusinessLayer {
     @Override
     public List<ImageModel> getByTitle(String title) {
         return getAllImages().parallelStream()
+                .filter(img -> img.getTitle() != null)
                 .filter(img -> img.getTitle().equals(Objects.requireNonNullElse(title, "")))
                 .collect(Collectors.toList());
     }

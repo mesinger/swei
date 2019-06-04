@@ -1,9 +1,6 @@
 package models;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Date;
 
@@ -18,7 +15,7 @@ public abstract class ImageModel {
     protected Orientation orientation;
     protected int iso;
     protected Date modifyDate;
-    protected String title;
+    protected String title = "";
     protected String keywords;
     protected int id;
     protected int photographerID;

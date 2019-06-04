@@ -120,7 +120,8 @@ public class StartPageController extends IController implements Initializable {
                 .filter(data -> bl.getByPath(data.getPath()).isEmpty())
                 .forEach(data -> bl.addImage(data));
 
-        bl.getAllImages()
+        bl.getAllImages().stream()
+                .filter(image -> imagePaths.contains(image.getPath()))
                 .forEach(image -> imgscroll.addPlaceholderBox(image));
     }
 
