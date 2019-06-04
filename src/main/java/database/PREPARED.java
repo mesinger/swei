@@ -18,7 +18,7 @@ interface PREPARED {
     String PHOTOGRAPHER_CREATE =
             "CREATE TABLE IF NOT EXISTS photographer (" +
                     "id INTEGER PRIMARY KEY," +
-                    "firstname VARCHAR(255) NOT NULL," +
+                    "firstname VARCHAR(255) NULL," +
                     "lastname VARCHAR(255) NOT NULL," +
                     "dateofbirth DATE NOT NULL," +
                     "notes VARCHAR(255)" +
@@ -58,7 +58,7 @@ interface PREPARED {
             "UPDATE photographer " +
                     "SET " +
                     "firstname = ?, " +
-                    "surname = ?, " +
+                    "lastname = ?, " +
                     "dateofbirth = ?, " +
                     "notes = ? " +
                     "WHERE id = ?;";

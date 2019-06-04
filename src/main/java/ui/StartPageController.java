@@ -61,15 +61,14 @@ public class StartPageController extends IController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        if(loadProperties() && initializeDatabaseConnection()){
+        if (loadProperties() && initializeDatabaseConnection()) {
 
             System.out.println("connected to db");
 
             loadImagesInImageScroll();
 
             initializeEventHandlers(resources);
-        }
-        else {
+        } else {
             System.out.println("error connecting to db");
         }
     }
@@ -186,7 +185,8 @@ public class StartPageController extends IController implements Initializable {
 
     private EventHandler<ActionEvent> onIptcSave() {
         return event -> {
-            if (pres.getPhotographerID().equals("0") || bl.getByPhotographer(Integer.valueOf(pres.getPhotographerID())) != null) {
+            if (pres != null && pres.getPhotographerID() != null && (pres.getPhotographerID().equals("0")
+                    || bl.getByPhotographer(Integer.valueOf(pres.getPhotographerID())) != null)) {
                 pres.saveDataToModel();
                 bl.editImage(model);
             }

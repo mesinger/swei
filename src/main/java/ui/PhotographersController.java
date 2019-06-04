@@ -84,8 +84,12 @@ public class PhotographersController extends IController implements Initializabl
         photographerList.getSelectionModel().selectedItemProperty().addListener(
                 (ChangeListener<PhotographerModel>) (observable, oldValue, newValue) -> {
                     if (newValue != null) {
+                        model = newValue;
                         presModel = new PhotographerPresentationModel(newValue);
                         presModel.loadDataFromModel();
+                        presModel.firstNameProperty().addListener(textChangedListener);
+                        presModel.surNameProperty().addListener(textChangedListener);
+                        presModel.birthDateProperty().addListener(textChangedListener);
                         Binding.applyBinding(photographerData, presModel);
                     }
         });
