@@ -31,8 +31,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-public class StartPageController implements Initializable {
+public class StartPageController extends IController implements Initializable {
     public ImageView imageView;
     public Label iso;
     public Label camname;
@@ -52,17 +55,27 @@ public class StartPageController implements Initializable {
     private ImageModel model;
     private ImagePresentationModel pres;
 
-    // TODO: We shouldn't need both of these
-    private PicDatabaseAccess dal = new PicDatabaseAccess();
-    private IDatabaseAccess dbaccess = new PicDatabaseAccess();
-
-    private IImageBL bl = new PicDbBusinessLayer();
-
     private FileInputStream propertiesFile;
     private Properties properties = new Properties();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        if(loadProperties() && initializeDatabaseConnection()){
+
+            System.out.println("connected to db");
+
+            loadImagesInImageScroll();
+
+            initializeEventHandlers(resources);
+        }
+        else {
+            System.out.println("error connecting to db");
+        }
+    }
+
+    private boolean loadProperties() {
+
         try {
             propertiesFile = new FileInputStream(new File("config.txt"));
             properties.load(propertiesFile);
@@ -72,135 +85,137 @@ public class StartPageController implements Initializable {
             System.out.println("Invalid configuration file, check the syntax!");
         }
 
-        dbaccess.open();
-        bl.setDAL(dbaccess);
+        return properties != null;
+    }
 
-        PicDatabaseAccess db = new PicDatabaseAccess();
+    private List<String> getImagePathsFromConfiguredFolder() {
 
-        if (db.open() && properties != null) {
-            System.out.println("connected to db");
+        Function<String, Predicate<File>> checkForFileExtension = extension -> file -> file.getName().toLowerCase().endsWith(extension);
 
-            db.setup();
+        var imagePaths =
+                List.of(new File(properties.getProperty("IMG_DIR")).listFiles()).stream()
+                        .filter(file -> file.isFile())
+                        .filter(checkForFileExtension.apply("jpeg"))
+                        .map(file -> file.getAbsolutePath())
+                        .collect(Collectors.toList());
 
-            // Get all images in folder
-            List<String> imagePaths = new ArrayList<String>();
+        imagePaths.addAll(List.of(new File(properties.getProperty("IMG_DIR")).listFiles()).stream()
+                .filter(file -> file.isFile())
+                .filter(checkForFileExtension.apply("jpg"))
+                .map(file -> file.getAbsolutePath())
+                .collect(Collectors.toList()));
 
-            System.out.println("Loading files from " + properties.getProperty("IMG_DIR"));
+        return imagePaths;
+    }
 
-            File[] files = new File(properties.getProperty("IMG_DIR")).listFiles();
+    protected void loadImagesInImageScroll() {
+        // Get all images in folder
+        var imagePaths = getImagePathsFromConfiguredFolder();
 
-            for (File file : files) {
-                if (file.isFile() && (file.getName().toLowerCase().endsWith("jpg") ||
-                        file.getName().toLowerCase().endsWith("jpeg"))) {
-                    imagePaths.add(file.getAbsolutePath());
-                }
-            }
+        // Extract data from the found images
+        var dataExtractor = new JPEGImageDataExtractor();
 
-            // Extract data from the found images
-            JPEGImageDataExtractor dataExtractor = new JPEGImageDataExtractor();
+        imagePaths.stream()
+                .map(path -> dataExtractor.extractExifAndIPTC(path))
+                .filter(data -> bl.getByPath(data.getPath()).isEmpty())
+                .forEach(data -> bl.addImage(data));
 
-            for (String image : imagePaths) {
-                ImageModel data = dataExtractor.extractExifAndIPTC(image);
+        bl.getAllImages()
+                .forEach(image -> imgscroll.addPlaceholderBox(image));
+    }
 
-                // Add image if it's not already in the database
-                if (bl.getByPath(data.getPath()).isEmpty()) {
-                    db.addImage(data);
-                }
-            }
+    private EventHandler<ActionEvent> onSearchEnteredAction() {
+        return event -> {
+            imgscroll.clear();
 
-            for (ImageModel image : bl.getAllImages()) {
-                imgscroll.addPlaceholderBox(image);
-            }
+            if (search.getText().isEmpty()) {
+                bl.getAllImages().stream()
+                        .forEach(image -> imgscroll.addPlaceholderBox(image));
+            } else {
 
-            search.setOnAction(
-                    e -> {
-                        // Enter was pressed in the search field, load only the correct images
-                        imgscroll.clear();
+                final List<ImageModel> toLoadingImages = new LinkedList<>();
 
-                        List<ImageModel> newImages = new LinkedList<>();
+                List.of(search.getText().split(" ")).stream()
+                        .forEach(keyword -> {
 
-                        // If the text is empty, get all images
-                        if (search.getText().isEmpty()) {
-                            newImages = bl.getAllImages();
-                        } else {
-                            for (String keyword : search.getText().split(" ")) {
-                                List<ImageModel> imagesThisKeyword = bl.getByKeyword(keyword);
+                            List<ImageModel> imagesThisKeyword = bl.getByKeyword(keyword);
 
-                                if (keyword.contains(":")) {
-                                    // This is a special keyword (e.g. iso)
-                                    String[] keyValue = keyword.split(":");
+                            if (keyword.contains(":")) {
+                                // This is a special keyword (e.g. iso)
+                                String[] keyValue = keyword.split(":");
 
-                                    if (keyValue[0].equals("iso")) {
-                                        imagesThisKeyword = bl.getByIso(keyValue[1]);
-                                    } else if (keyValue[0].equals("photographer")) {
-                                        imagesThisKeyword = bl.getByPhotographer(Integer.valueOf(keyValue[1]));
-                                    } else if (keyValue[0].equals("title")) {
-                                        imagesThisKeyword = bl.getByTitle(keyValue[1]);
-                                    }
-                                }
-
-                                for (ImageModel image : imagesThisKeyword) {
-                                    if (!newImages.contains(image)) {
-                                        newImages.add(image);
-                                    }
+                                if (keyValue[0].equals("iso")) {
+                                    imagesThisKeyword = bl.getByIso(keyValue[1]);
+                                } else if (keyValue[0].equals("photographer")) {
+                                    imagesThisKeyword = bl.getByPhotographer(Integer.valueOf(keyValue[1]));
+                                } else if (keyValue[0].equals("title")) {
+                                    imagesThisKeyword = bl.getByTitle(keyValue[1]);
                                 }
                             }
-                        }
 
-                        for (ImageModel image : newImages) {
-                            imgscroll.addPlaceholderBox(image);
-                        }
-                    });
+                            toLoadingImages.addAll(imagesThisKeyword);
+                        });
 
-            // Add event handler for when an image is clicked
-            imgscroll.addEventHandler(ImageClickedEvent.IMAGE_CLICKED_EVENT_TYPE, new
+                toLoadingImages.stream()
+                        .forEach(image -> imgscroll.addPlaceholderBox(image));
+            }
+        };
+    }
 
-                    ImageClickedEventHandler() {
-                        @Override
-                        public void onClicked(ImageModel image) {
-                            model = image;
-                            pres = new ImagePresentationModel(model);
-                            pres.loadDataFromModel();
+    private ImageClickedEventHandler onImageScrollClicked() {
+        return new ImageClickedEventHandler() {
 
-                            Binding.applyBinding(imageData, pres);
+            @Override
+            public void onClicked(ImageModel image) {
+                model = image;
+                pres = new ImagePresentationModel(model);
+                pres.loadDataFromModel();
 
-                            imageView.setImage(new Image("file:///" + image.getPath())); // TODO: Move this 'file:///'
-                            camname.setText("Camera model: " + image.getModel());
-                            iso.setText("ISO: " + image.getIso());
-                            exposure_time.setText("Exposure time: " + image.getExposure());
-                            focal_length.setText("Focal length: " + image.getFocalLength());
-                            aperture.setText("Aperture: " + image.getAperture());
-                        }
-                    });
+                Binding.applyBinding(imageData, pres);
 
-            iptcSave.setOnAction(actionEvent -> {
-                // TODO: Should be done as part of isValid probably
-                if (!pres.getPhotographerID().equals("0") && dal.getPhotographer(Integer.valueOf(pres.getPhotographerID())) != null) {
-                    // TODO: Error
-                }
+                imageView.setImage(new Image("file:///" + image.getPath())); // TODO: Move this 'file:///'
+                camname.setText("Camera model: " + image.getModel());
+                iso.setText("ISO: " + image.getIso());
+                exposure_time.setText("Exposure time: " + image.getExposure());
+                focal_length.setText("Focal length: " + image.getFocalLength());
+                aperture.setText("Aperture: " + image.getAperture());
+            }
+        };
+    }
 
+    private EventHandler<ActionEvent> onIptcSave() {
+        return event -> {
+            if (pres.getPhotographerID().equals("0") || bl.getByPhotographer(Integer.valueOf(pres.getPhotographerID())) != null) {
                 pres.saveDataToModel();
-                dal.editImage(model);
-            });
+                bl.editImage(model);
+            }
+        };
+    }
 
+    private EventHandler<ActionEvent> onPhotographerEdited(ResourceBundle resources) {
+        return actionEvent -> {
+            Parent root;
+            try {
+                root = FXMLLoader.load(getClass().getResource("photographers.fxml"), resources);
+                Stage stage = new Stage();
+                stage.setTitle("Photographers");
+                stage.setScene(new Scene(root, 600, 600));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+    }
 
-            // Open photographer editing menu
-            photographer_edit.setOnAction(new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent event) {
-                    Parent root;
-                    try {
-                        root = FXMLLoader.load(getClass().getResource("photographers.fxml"), resources);
-                        Stage stage = new Stage();
-                        stage.setTitle("Photographers");
-                        stage.setScene(new Scene(root, 600, 600));
-                        stage.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } else {
-            System.out.println("error connecting to db");
-        }
+    private void initializeEventHandlers(ResourceBundle resources) {
+        search.setOnAction(onSearchEnteredAction());
+
+        // Add event handler for when an image is clicked
+        imgscroll.addEventHandler(ImageClickedEvent.IMAGE_CLICKED_EVENT_TYPE, onImageScrollClicked());
+
+        iptcSave.setOnAction(onIptcSave());
+
+        // Open photographer editing menu
+        photographer_edit.setOnAction(onPhotographerEdited(resources));
     }
 }

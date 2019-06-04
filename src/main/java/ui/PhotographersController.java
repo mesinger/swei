@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class PhotographersController implements Initializable {
+public class PhotographersController extends IController implements Initializable {
     public GridPane photographerData;
     public ListView photographerList;
     public Button addPhotographerButton;
@@ -24,12 +24,16 @@ public class PhotographersController implements Initializable {
     public TextField notes;
     public Button saveButton;
 
-    private IPhotographerDAL dal = new MockDAL();
     private PhotographerModel model = new PhotographerModel();
     private PhotographerPresentationModel presModel = new PhotographerPresentationModel(model);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        initializeDatabaseConnection();
+
+        reloadList();
+
         // Button is disabled when input is invalid
         // FIXME: Button only gets enabled after field has been modified twice!
         ChangeListener textChangedListener = (observable, oldValue, newValue) ->
@@ -45,9 +49,9 @@ public class PhotographersController implements Initializable {
         saveButton.setOnAction(actionEvent -> {
             presModel.saveDataToModel();
             if (model.getId() == 0) {
-                dal.addPhotographer(model);
+                bl.addPhotographer(model);
             } else {
-                dal.editPhotographer(model);
+                bl.editPhotographer(model);
             }
             reloadList();
             model = new PhotographerModel();
@@ -89,7 +93,7 @@ public class PhotographersController implements Initializable {
 
     // Get all photographers from the DAL and insert them into the photographer list
     private void reloadList() {
-        List<PhotographerModel> photographers = dal.getAllPhotographers();
+        List<PhotographerModel> photographers = bl.getAllPhotographers();
         photographerList.getItems().clear();
 
         for (var photographer : photographers) {

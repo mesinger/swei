@@ -24,20 +24,6 @@ public class Main extends Application {
         basicConfigurator.configure();
         logger.debug("Entering picdb ...");
 
-        PicDatabaseAccess db = new PicDatabaseAccess();
-        if(db.open()){
-
-            db.setup();
-
-            PhotographerModel model = new PhotographerModel();
-            model.setFirstName("thomas");
-            model.setSurName("brezina");
-            model.setBirthDate(Date.valueOf("1997-03-10"));
-            model.setNotes("notes...");
-
-            db.addPhotographer(model);
-        }
-
         Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
         primaryStage.setTitle("SWEI");
         primaryStage.setScene(new Scene(root, 800, 600));

@@ -32,7 +32,7 @@ public class PicDatabaseAccess extends ISQLiteDatabaseAccess implements IDatabas
 
         try {
 
-            prepareConnectionForStatement(false, Connection.TRANSACTION_READ_COMMITTED);
+            prepareConnectionForStatement(false, Connection.TRANSACTION_SERIALIZABLE);
 
             stmt = prepareStatementForCommit(
                     PREPARED.PHOTOGRAPHER_SELECT_ALL

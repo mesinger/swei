@@ -19,7 +19,7 @@ interface PREPARED {
             "CREATE TABLE IF NOT EXISTS photographer (" +
                     "id INTEGER PRIMARY KEY," +
                     "firstname VARCHAR(255) NOT NULL," +
-                    "surname VARCHAR(255) NOT NULL," +
+                    "lastname VARCHAR(255) NOT NULL," +
                     "dateofbirth DATE NOT NULL," +
                     "notes VARCHAR(255)" +
                     ");";
