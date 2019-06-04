@@ -1,12 +1,6 @@
 package ui;
 
-import business.IImageBL;
-import business.PicDbBusinessLayer;
-import database.IDatabaseAccess;
-import database.IImageDAL;
-import database.PicDatabaseAccess;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import models.ImageModel;
 import image.JPEGImageDataExtractor;
@@ -17,12 +11,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import presentationModels.ImagePresentationModel;
+import reporting.PDFMaker;
 import util.Binding;
 
 import java.io.File;
@@ -208,6 +201,39 @@ public class StartPageController extends IController implements Initializable {
         };
     }
 
+    private EventHandler<ActionEvent> onReportImage (ResourceBundle resources) {
+        return actionEvent -> {
+            if (model == null) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("No image selected");
+                alert.setHeaderText("Please select an image.");
+                alert.setContentText("Right on the bottom you can find your images, select one of those to continue");
+
+                alert.showAndWait();
+            }
+            else if (model.getTitle().equals("")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("No image name given");
+                alert.setHeaderText("Please search a new name for the image.");
+                alert.setContentText("A text is in the title field is required first.");
+
+                alert.showAndWait();
+            }
+            else {
+                PDFMaker pdfMaker = new PDFMaker();
+                pdfMaker.setImg(model);
+                pdfMaker.imageProduce();
+            }
+        };
+    }
+
+    private EventHandler<ActionEvent> onReportList (ResourceBundle resources) {
+        return actionEvent -> {
+            PDFMaker pdfMaker = new PDFMaker();
+            pdfMaker.tagProduce();
+        };
+    }
+
     private void initializeEventHandlers(ResourceBundle resources) {
         search.setOnAction(onSearchEnteredAction());
 
@@ -218,5 +244,11 @@ public class StartPageController extends IController implements Initializable {
 
         // Open photographer editing menu
         photographer_edit.setOnAction(onPhotographerEdited(resources));
+
+        // Make reporting for image
+        reportImage.setOnAction(onReportImage(resources));
+
+        // Make reporting for tags
+        reportList.setOnAction(onReportList(resources));
     }
 }
