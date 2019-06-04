@@ -3,6 +3,8 @@ package ui;
 import models.ImageModel;
 import javafx.scene.layout.AnchorPane;
 
+import java.util.logging.Logger;
+
 public class ProxyAnchorPane extends AnchorPane {
     public ProxyAnchorPane(ImageModel image) {
         this.image = image;

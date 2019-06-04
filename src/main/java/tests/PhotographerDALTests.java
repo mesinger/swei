@@ -4,15 +4,28 @@ import database.MockDAL;
 import models.PhotographerModel;
 import org.junit.jupiter.api.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.TimeZone;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PhotographerDALTests {
 
     private Date makeDate(String yyyy_mm_dd) {
-        return java.sql.Date.valueOf(yyyy_mm_dd);
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd");
+        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            Date date = isoFormat.parse(yyyy_mm_dd);
+            return date;
+        } catch (ParseException e) {
+            e.getStackTrace();
+        }
+        return null;
     }
 
     private MockDAL prepareDAL(List<PhotographerModel> photographerModelList) {
@@ -24,73 +37,26 @@ public class PhotographerDALTests {
         return dal;
     }
 
-    private PhotographerModel createPhotographerModel(String firstName, String surName, String yyyy_mm_dd, String notes) {
+    private PhotographerModel createPhotographerModel() {
         PhotographerModel photographer = new PhotographerModel();
-        photographer.setNotes(notes);
-        photographer.setSurName(surName);
-        photographer.setFirstName(firstName);
-        photographer.setBirthDate(makeDate(yyyy_mm_dd));
 
-        return photographer;
-    }
-
-
-    private MockDAL preparePhotographers() {
-        List<PhotographerModel> photographers = new ArrayList<>();
-        photographers.add(createPhotographerModel("Max", "Mustermann",
-                "1990-12-3", "note"));
-        photographers.add(createPhotographerModel("Martina", "Musterfrau",
-                "1992-12-3", "note"));
-        photographers.add(createPhotographerModel("Testperson", "Test",
-                "1992-12-3", "note"));
-
-        MockDAL dal = prepareDAL(photographers);
-
-        return dal;
+        return null;
     }
 
     @Test
     public void addNewPhotographer () {
-        MockDAL dal = preparePhotographers();
+        PhotographerModel max = new PhotographerModel();
+        max.setFirstName("Max");
+        max.setSurName("Mustermann");
+
+        List<PhotographerModel> photographers = new ArrayList<>();
+        photographers.add(max);
+        MockDAL dal = prepareDAL(photographers);
+
+
 
         assertNotNull(dal.getAllPhotographers());
         assertEquals(dal.getPhotographer(1).getFirstName(), "Max");
-        assertEquals(dal.getPhotographer(1).getSurName(), "Mustermann");
-        assertEquals(dal.getPhotographer(1).getNotes(), "note");
-        assertEquals(dal.getPhotographer(1).getBirthDate(), makeDate("1990-12-3"));
+
     }
-
-    @Test
-    public void incrementingIdWorks() {
-        MockDAL dal = preparePhotographers();
-
-        dal.deletePhotographer(2);
-        assertNotNull(dal.getAllPhotographers());
-        assertNotNull(dal.getPhotographer(1));
-        assertNull(dal.getPhotographer(2));
-    }
-
-    @Test
-    public void accessAfterDeletedId() {
-        MockDAL dal = preparePhotographers();
-
-        dal.deletePhotographer(1);
-        dal.deletePhotographer(2);
-        assertNull(dal.getPhotographer(1));
-        assertNull(dal.getPhotographer(2));
-        assertNotNull(dal.getPhotographer(3));
-        assertEquals(dal.getPhotographer(3).getFirstName(), "Testperson");
-    }
-
-    @Test
-    public void addNewPhotographerAfterDeletingOthers() {
-        MockDAL dal = preparePhotographers();
-
-        dal.deletePhotographer(1);
-        dal.deletePhotographer(2);
-        dal.deletePhotographer(3);
-        dal.addPhotographer(createPhotographerModel("Mathias", "Baumgartinger", "1990-12-11", null));
-        assertEquals(dal.getPhotographer(4).getFirstName(), "Mathias");
-    }
-
 }

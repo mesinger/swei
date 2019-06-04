@@ -22,6 +22,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.apache.log4j.Priority;
 import presentationModels.ImagePresentationModel;
 import util.Binding;
 
@@ -33,6 +34,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class StartPageController extends IController implements Initializable {
@@ -63,13 +65,13 @@ public class StartPageController extends IController implements Initializable {
 
         if (loadProperties() && initializeDatabaseConnection()) {
 
-            System.out.println("connected to db");
+            Logger.getGlobal().info("Connected to db");
 
             loadImagesInImageScroll();
 
             initializeEventHandlers(resources);
         } else {
-            System.out.println("error connecting to db");
+            Logger.getGlobal().warning("Couldn't connect do db!");
         }
     }
 
@@ -79,9 +81,9 @@ public class StartPageController extends IController implements Initializable {
             propertiesFile = new FileInputStream(new File("config.txt"));
             properties.load(propertiesFile);
         } catch (FileNotFoundException e) {
-            System.out.println("Configuration file not found!");
+            Logger.getGlobal().warning("Configuration file not found!");
         } catch (IOException e) {
-            System.out.println("Invalid configuration file, check the syntax!");
+            Logger.getGlobal().info("Invalid configuration file, check the syntax!");
         }
 
         return properties != null;
@@ -125,6 +127,8 @@ public class StartPageController extends IController implements Initializable {
     }
 
     private EventHandler<ActionEvent> onSearchEnteredAction() {
+        Logger.getGlobal().info("Search entered");
+
         return event -> {
             imgscroll.clear();
 
@@ -167,6 +171,7 @@ public class StartPageController extends IController implements Initializable {
 
             @Override
             public void onClicked(ImageModel image) {
+                Logger.getGlobal().info("Setting up bindings for new image");
                 model = image;
                 pres = new ImagePresentationModel(model);
                 pres.loadDataFromModel();
@@ -184,6 +189,8 @@ public class StartPageController extends IController implements Initializable {
     }
 
     private EventHandler<ActionEvent> onIptcSave() {
+        Logger.getGlobal().info("Saving IPTC data");
+
         return event -> {
             if (pres != null && pres.getPhotographerID() != null && (pres.getPhotographerID().equals("0")
                     || bl.getByPhotographer(Integer.valueOf(pres.getPhotographerID())) != null)) {

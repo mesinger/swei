@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class Imagescroll extends ScrollPane implements Initializable {
 
@@ -61,6 +62,8 @@ public class Imagescroll extends ScrollPane implements Initializable {
      * @param image The image which should be displayed once the box is visible
      */
     public void addPlaceholderBox(ImageModel image) {
+        Logger.getGlobal().info("Adding placeholder box for image with path " + image.getPath());
+
         AnchorPane anchorPane = new ProxyAnchorPane(image);
 
         // Bind the width to the height of the Imagescroll to simulate images with 1:1 aspect ratio
@@ -133,6 +136,8 @@ public class Imagescroll extends ScrollPane implements Initializable {
 
                 if ((pane).getChildren().size() == 0) {
                     String path = ((ProxyAnchorPane) pane).getImagepath();
+
+                    Logger.getGlobal().info("Loading real image with path " + path + " instead of placeholder");
 
                     // This is just the preview, so we can compress the image for better performance
                     addImage(new Image(path, 300, 300, true, false), pane);

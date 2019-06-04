@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 /**
  * mostly utility functions used for communicating with
@@ -50,6 +51,8 @@ public abstract class IDatabaseAccess implements IDatabaseConnection{
      */
     protected PreparedStatement prepareStatementForCommit(String sql, StatementParam ... params) throws SQLException {
 
+        Logger.getGlobal().info("Preparing SQL statement: " + sql);
+
         final PreparedStatement stmt = conn.prepareStatement(sql);
 
         AtomicInteger parameterIndex = new AtomicInteger(1);
@@ -89,7 +92,7 @@ public abstract class IDatabaseAccess implements IDatabaseConnection{
      */
     protected void handleExeption(SQLException ex){
 
-        System.err.println("SQL: Error while inserting row photographer");
+        Logger.getGlobal().warning("SQL: Error while inserting row photographer");
         ex.printStackTrace();
 
         try {
